@@ -12,7 +12,7 @@ local musicrate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 -- the bpm of Katy Perry's Peacock
 local bpm = 140.000
 -- crossfade duration
-local xfade = (60/bpm)
+local xfade = (60/bpm) * 0.5
 
 -- ------------------------------------------------------
 
