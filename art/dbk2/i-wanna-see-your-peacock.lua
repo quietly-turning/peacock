@@ -14,13 +14,11 @@ local text = {
   { 3.500, "I  WANNA\nSEE YOUR\n       \n\n\n"},
   { 4.000, "I  WANNA\nSEE YOUR\nPEA    \n\n\n"},
   { 4.500, "I  WANNA\nSEE YOUR\nPEACOCK\n\n\n"},
-  { 5.500, "I  WANNA\nSEE YOUR\nPEACOCK-COCK-COCK YOUR PEACOCK-COCK\nPEACOCK-COCK-COCK YOUR PEACOCK-COCK\nI WANNA\nSEE YOUR"
-},
-  -- { 6.500, "IWAN\nNACU\nRPEA\nCOCK-COCK-COCK\n"},
-  -- { 7.500, "IWAN\nNACU\nRPEA\nCOCK-COCK-COCK YOUR\n"},
-  -- { 8.000, "IWAN\nNACU\nRPEA\nCOCK-COCK-COCK YOUR PEA"},
-  -- { 8.500, "IWAN\nNACU\nRPEA\nCOCK-COCK-COCK YOUR PEACOCK"},
-  -- { 9.500, "IWAN\nNACU\nRPEA\nCOCK-COCK-COCK YOUR PEACOCK-COCK"},
+  { 5.500, "I  WANNA\nSEE YOUR\nPEACOCK-COCK\n\n\n"},
+  { 6.500, "I  WANNA\nSEE YOUR\nPEACOCK-COCK-COCK\n\n\n"},
+  { 7.500, "I  WANNA\nSEE YOUR\nPEACOCK-COCK-COCK YOUR PEA\n\n\n"},
+  { 8.000, "I  WANNA\nSEE YOUR\nPEACOCK-COCK-COCK YOUR PEACOCK\n\n\n"},
+  { 11.500, "I  WANNA\nSEE YOUR\nPEACOCK-COCK-COCK YOUR PEACOCK-COCK\nPEACOCK-COCK-COCK YOUR PEACOCK-COCK\nI WANNA\nSEE YOUR"},
 }
 
 local function Update(af, dt)
@@ -31,7 +29,7 @@ local function Update(af, dt)
     cur_index = cur_index + 1
   end
 
-  if zoom_out_applied==false and GAMESTATE:GetSongBeat() > 4.5 then
+  if zoom_out_applied==false and GAMESTATE:GetSongBeat() > 14 then
     bitmaptextActor:finishtweening():smooth((60/bpm)*3):zoom(0.255):y(240)
     zoom_out_applied = true
   end
@@ -54,7 +52,7 @@ local af = Def.ActorFrame{
   Def.BitmapText{
     File=fontpath,
     InitCommand=function(self)
-      self:align(0,0.5):zoom(0.55):xy(40, 360)
+      self:align(0,0.5):zoom(0.55):xy(40, 420)
       bitmaptextActor=self
     end,
   }
