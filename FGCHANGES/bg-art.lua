@@ -61,7 +61,7 @@ local function GenerateSprite(path)
       self:Center():zoom(_screen.w/WideScale(src_w*0.75,src_w))
 
       -- if it is a video, don't start playing it immediately, and don't loop playback
-      if path:match(".mp4$") then
+      if path:match(".mp4$") or path:match(".mov$") then
          self:animate(false):loop(false):diffusealpha(1):rate(musicrate)
       end
    end
@@ -82,7 +82,7 @@ local function Update(af, dt)
       if art_pieces[cur_actor][3]:match(".lua$") then actors[cur_actor]:playcommand("Show") end
 
       -- if current art is a video, play it now
-      if art_pieces[cur_actor][3]:match(".mp4$") then actors[cur_actor]:animate(true) end
+      if art_pieces[cur_actor][3]:match(".mp4$") or art_pieces[cur_actor][3]:match(".mov$") then actors[cur_actor]:animate(true) end
 
       -- fade out prev art
       if (cur_actor-1 > 0) then actors[cur_actor-1]:sleep(xfade):queuecommand("Hide") end
