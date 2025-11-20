@@ -1,7 +1,6 @@
 local WideScale = unpack(...)
 
 local af = Def.ActorFrame{}
-af.OnCommand=function(self)   self:visible(false) end
 af.ShowCommand=function(self) self:visible(true) end
 af.HideCommand=function(self) self:hibernate(math.huge) end
 

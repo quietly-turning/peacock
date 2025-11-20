@@ -137,7 +137,12 @@ args[#args+1] = Def.Actor({ InitCommand=function(self) self:sleep(999) end })
 for _, piece in ipairs(art_pieces) do
 
    if (piece[3]:match(".lua$")) then
-      args[#args+1] = LoadActor("../art/"..piece[3], {WideScale})..{InitCommand=function(self) actors[#actors+1] = self end}
+      args[#args+1] = LoadActor("../art/"..piece[3], {WideScale})..{
+         OnCommand=function(self)
+            actors[#actors+1] = self
+            self:visible(false)
+         end
+      }
    else
       args[#args+1] = GenerateSprite(piece[3])
    end
