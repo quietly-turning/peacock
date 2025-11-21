@@ -1,10 +1,19 @@
 local bitmaptextActor
 local cur_index = 1
+
+local bpm = 140
+local musicrate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+
 local fontpath = GAMESTATE:GetCurrentSong():GetSongDir().."art/dbk2/Arial Black/Arial Black 128px.ini"
+
 local zoom_out_applied = false
 local rotation_applied = false
 local fadeout_applied  = false
-local bpm = 140
+local feathers_tweened = false
+
+local START_ZOOM = 0.585
+local START_X    = 30
+local START_Y    = 460
 
 local text = {
   { 1.500, "I       \n        \n       \n\n\n"},
@@ -29,33 +38,70 @@ local function Update(af, dt)
     cur_index = cur_index + 1
   end
 
-  if zoom_out_applied==false and GAMESTATE:GetSongBeat() > 14 then
-    bitmaptextActor:finishtweening():smooth((60/bpm)*3):zoom(0.255):y(240)
+  if zoom_out_applied==false and GAMESTATE:GetSongBeat() > 11 then
+    af:finishtweening():smooth(((60/bpm)*3)*musicrate):zoom(0.255):y(240)
     zoom_out_applied = true
   end
 
-  if rotation_applied==false and GAMESTATE:GetSongBeat() > 17.5 then
-    bitmaptextActor:finishtweening():smooth((60/bpm)*2):zoom(0.125):rotationz(-90):xy(_screen.cx, _screen.h-20)
+  if rotation_applied==false and GAMESTATE:GetSongBeat() > 15 then
+    af:finishtweening():smooth(((60/bpm)*2)*musicrate):zoom(0.09):rotationz(-90):xy(_screen.cx, _screen.h-20)
     rotation_applied = true
   end
 
-  if GAMESTATE:GetSongBeat() > 24 then
+  if feathers_tweened==false and GAMESTATE:GetSongBeat() > 16 then
+    af:playcommand('RevealFeathers')
+    feathers_tweened = true
+  end
+
+  if GAMESTATE:GetSongBeat() > 22 then
     af:hibernate(math.huge)
   end
 end
 
+-- --------------------------------------
+
 local af = Def.ActorFrame{
   OnCommand=function(self)
+    self:zoom(START_ZOOM):xy(START_X, START_Y)
     self:SetUpdateFunction( Update )
-  end,
+  end
+}
 
-  Def.BitmapText{
+-- --------------------------------------
+-- feathers
+
+local rotations = {-90,-60,-30, 30, 60, 90}
+local xOffsets = {800, 500, 200} -- 🥴
+local feathersAF = Def.ActorFrame{}
+
+for i=1,6 do
+  feathersAF[#feathersAF+1] = Def.BitmapText{
     File=fontpath,
+    Text="\n\nPEACOCK\n\n\n",
     InitCommand=function(self)
-      self:align(0,0.5):zoom(0.55):xy(40, 420)
-      bitmaptextActor=self
+      self:align(0,0.5):diffuseleftedge({0, 0.2, 0.8, 1}):diffuserightedge({0,0.8,0.2,1})
+      self:visible(false)
     end,
+    RevealFeathersCommand=function(self)
+      self:visible(true)
+      self:decelerate(1.5 * musicrate):rotationz(rotations[i]):zoom(3)
+      if xOffsets[i] then
+        self:x(self:GetX()+xOffsets[i])
+      end
+    end
   }
+end
+
+af[#af+1] = feathersAF
+
+-- --------------------------------------
+
+af[#af+1] = Def.BitmapText{
+  File=fontpath,
+  InitCommand=function(self)
+    self:align(0,0.5)
+    bitmaptextActor=self
+  end,
 }
 
 return af
