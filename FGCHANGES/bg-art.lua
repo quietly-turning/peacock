@@ -28,7 +28,7 @@ local art_pieces = {
    {  52.000,   false,      "alex/jaw-droppin.png" },
    {  54.000,   false,      "alex/eye-poppin.png" },
    {  56.000,   false,      "alex/head-turnin.png" },
-   {  58.000,   false,      "alex/body-shockin.png" },
+   {  58.000,   false,      "alex/body-shockin.lua" },
    {  68.000,   true,       "catsudawn/peacock/peacock.lua"},
    {  84.000,   true,       "bogo/peacocklef-.png" },
    {  92.000,   true,       "silverwolfstar/peacock.jpg" },
