@@ -1,9 +1,8 @@
 local bounce_applied = false
-local sprite_ref
 
 local function Update(af, dt)
   if bounce_applied==false and GAMESTATE:GetSongBeat() > 60 then
-    sprite_ref:playcommand("Bounce")
+    af:playcommand("Bounce")
     bounce_applied = true
   end
 end
@@ -24,12 +23,17 @@ af[#af+1] = Def.Quad{
 
 af[#af+1] = LoadActor("./body-shockin.png")..{
   InitCommand=function(self)
-    sprite_ref = self
     local src_w = self:GetTexture():GetSourceWidth()
     self:Center():zoom(_screen.w/WideScale(src_w*0.75,src_w))
   end,
   BounceCommand=function(self)
     self:thump():effectclock('beatnooffset'):effectperiod(1)
+  end
+}
+
+af[#af+1] = LoadActor("../coconutbowling/default.lua")..{
+  BounceCommand=function(self)
+    self:queuecommand("Animate")
   end
 }
 
