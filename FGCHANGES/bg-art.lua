@@ -38,13 +38,15 @@ local art_pieces = {
    { 124.000,   true,       "Mey-Z Daisy/ascii-peacock.mp4" },
    { 140.000,   true,       "mrbrownjeremy/Peacuckoo2.mp4" },
    { 148.000,   true,       "brandon/peacock.jpg" },
-   { 156.000,   true,       "Axlemon/peacock.jpg" },
+   { 156.000,   true,       "Draner/archipelago-peacock.jpg" },
    { 164.000,   true,       "bogo/when they say theyve got that dawg in em.jpg" },
    { 172.000,   true,       "catsudawn/pavo-lisa.jpg" },
-   -- { 180.000,   true,       "pung/im really good at drawing guys you just want to punch in the face - little stinkers if you will.png"},
-   { 180.00,    true,       "placeholder.png"},
+   { 180.000,   true,       "placeholder.png" },
+   { 196.000,   true,       "Chingching/peacock.jpg"},
+
    { 212.000,   true,       "dbk2/fight/fight.lua"},
-   { 228.000,   true,       "dbk2/oot.mp4"}
+   { 228.000,   true,       "dbk2/oot.mp4"},
+   { 252.000,   true,       "placeholder.png" },
 }
 
 -- ------------------------------------------------------
