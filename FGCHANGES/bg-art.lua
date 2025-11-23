@@ -119,6 +119,52 @@ local function IsEditMode()
    return (THEME:GetMetric(screen:GetName(), "Class") == "ScreenEdit")
 end
 
+
+local function GetPlayerAF(pn)
+   local screen = SCREENMAN:GetTopScreen()
+   if not screen then return false end
+
+   local playerAF = nil
+
+   -- Get the player ActorFrame on ScreenGameplay
+   -- It's a direct child of the screen and named "PlayerP1" for P1
+   -- and "PlayerP2" for P2.
+   -- This naming convention is hardcoded in the SM5 engine.
+   --
+   -- ScreenEdit does not name its player ActorFrame, but we can still find it.
+
+   -- find the player ActorFrame in edit + practice mode
+   if (THEME:GetMetric(screen:GetName(), "Class") == "ScreenEdit") then
+      local notefields = {}
+      -- loop through all nameless children of `screen`
+      -- and find the one that contains the NoteField
+      -- which is thankfully still named "NoteField"
+      for _,nameless_child in ipairs(screen:GetChild("")) do
+         if nameless_child:GetChild("NoteField") then
+            notefields[#notefields+1] = nameless_child
+         end
+      end
+
+      -- needed for practice mode
+      -- If there is only one side joined always return the first one.
+      if #notefields == 1 then
+         playerAF = notefields[1]
+      -- If there are two sides joined, return the one that matches the player number.
+      else
+         playerAF = notefields[PlayerNumber:Reverse()["PlayerNumber_"..pn]+1]
+      end
+
+   -- find the player ActorFrame in gameplay
+   else
+      local player_af = screen:GetChild("Player"..pn)
+      if player_af then
+         playerAF = player_af
+      end
+   end
+
+   return playerAF
+end
+
 -- ------------------------------------------------------
 
 local args = {
