@@ -50,11 +50,14 @@ local art_pieces = {
    { 164.000,   true,       "bogo/when they say theyve got that dawg in em.jpg" },
    { 172.000,   true,       "catsudawn/pavo-lisa.jpg" },
    { 180.000,   true,       "placeholder.png" },
+   { 188.000,   true,       "placeholder.png" },
    { 196.000,   true,       "Chingching/peacock.jpg"},
-
    { 212.000,   true,       "dbk2/fight/fight.lua"},
    { 228.000,   true,       "dbk2/oot.mp4"},
    { 252.000,   true,       "placeholder.png" },
+   { 260.000,   true,       "placeholder.png" },
+   { 268.000,   true,       "placeholder.png" },
+   -- { 275.000,   true,       "credits/credits.lua" },
 }
 
 -- ------------------------------------------------------
