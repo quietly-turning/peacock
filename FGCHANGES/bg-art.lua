@@ -172,22 +172,26 @@ local args = {
       self:SetUpdateFunction( Update )
    end,
    OnCommand=function(self)
-      -- don't fade out the theme's UI in EditMode
-      if IsEditMode() then return end
-
       local screen = SCREENMAN:GetTopScreen()
       local layers = screen:GetChildren()
 
-      if layers.In       then layers.In:visible(false) end
+      -- hide/fade-out UI in Gameplay so players can focus on the lovely art :)
+      -- don't fade UI in Edit mode
+      if not IsEditMode() then
+         if layers.In then layers.In:visible(false) end
 
-      if layers.PlayerP1 then layers.PlayerP1:z(1) end
-      if layers.PlayerP2 then layers.PlayerP2:z(1) end
-
-      for name,layer in pairs(layers) do
-         if not (name=="SongBackground" or name=="SongForeground" or name=="PlayerP1" or name=="PlayerP2") then
-            layer:smooth(1.5):diffusealpha(0)
+         for name,layer in pairs(layers) do
+            if not (name=="SongBackground" or name=="SongForeground" or name=="PlayerP1" or name=="PlayerP2") then
+               layer:smooth(1.5):diffusealpha(0)
+            end
          end
       end
+
+
+      local p1AF = GetPlayerAF("P1")
+      local p2AF = GetPlayerAF("P2")
+      if p1AF then p1AF:z(1) end
+      if p2AF then p2AF:z(1) end
 
       self:queuecommand("SetDraw")
    end,
