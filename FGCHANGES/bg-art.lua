@@ -7,12 +7,20 @@ local WideScale = function(AR4_3, AR16_9)
 end
 
 -- ------------------------------------------------------
-
-local musicrate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 -- the bpm of Katy Perry's Peacock
-local bpm = 140.000
--- crossfade duration
-local xfade = (60/bpm) * 0.25
+local bpm = GAMESTATE:GetCurrentSong():GetDisplayBpms()[1]
+-- music rate chosen by the player(s)
+local musicrate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+
+-- possible crossfade duration
+local crossfades = {
+   quarter_note   = (60/bpm),
+   eighth_note    = (60/bpm) * 0.5,
+   sixteenth_note = (60/bpm) * 0.25,
+}
+
+--
+local xfade = crossfades.sixteenth_note
 
 -- ------------------------------------------------------
 
