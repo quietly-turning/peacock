@@ -27,7 +27,7 @@ local xfade = crossfades.sixteenth_note
 local actors = {}
 local cur_actor = 1
 local art_pieces = {
-   -- beat     crossfade   path
+   --  beat     crossfade   path
    {   0.000,   false,      "dbk2/i-wanna-see-your-peacock.lua" },
    {  20.000,   false,      "pung/cool.jpg" },
    {  28.000,   true,       "doglover6262/Lucina.jpg" },
@@ -49,7 +49,7 @@ local art_pieces = {
    { 156.000,   true,       "Draner/archipelago-peacock.jpg" },
    { 164.000,   true,       "bogo/when they say theyve got that dawg in em.jpg" },
    { 172.000,   true,       "catsudawn/pavo-lisa.jpg" },
-   { 180.000,   true,       "placeholder.png" },
+   { 180.000,   true,       "teejusb/peacock.png" },
    { 188.000,   true,       "placeholder.png" },
    { 196.000,   true,       "Chingching/peacock.jpg"},
    { 212.000,   true,       "dbk2/fight/fight.lua"},
