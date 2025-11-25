@@ -58,8 +58,8 @@ local function GetDestCoords(i)
 end
 
 local function GetHypotenuseLength(i)
-  local a = math.abs(start_coords[i].y-dest_coords[i].y)
-  local b = math.abs(start_coords[i].x-dest_coords[i].x)
+  local a = math.abs(start_coords[i].y - dest_coords[i].y)
+  local b = math.abs(start_coords[i].x - dest_coords[i].x)
   return math.sqrt(math.pow(a,2) + math.pow(b,2))
 end
 
@@ -77,25 +77,23 @@ for i=1,num_peacuckoos do
       self:SetAllStateDelays((60/bpm)*0.5)
       self:xy( start_coords[i].x, start_coords[i].y )
 
+      -- which cycle of the for-loop are we in?
       local r = i % 4
+
       -- peacuckoo sprite asset is natively facing left
       -- we may need to rotatey(180) so it's facing right
-      if (r == 1) then
-        -- peacuckoos traveling from screen-left → screen-right should face right
+      -- peacuckoos traveling from screen-left → screen-right should face right
+      -- peacuckoos traveling vertically should face right if their destination-x is greater than their start-x
+      if (r == 1)
+      or ((r==2 or r==0) and (dest_coords[i].x > start_coords[i].x)) then
         self:rotationy( 180 )
-
-      elseif (r==2 or r==0) then
-        -- peacuckoos traveling vertically should face right if their destination-x is greater than their start-x
-        if (dest_coords[i].x > start_coords[i].x) then
-          self:rotationy(180)
-        end
       end
     end,
     ShowCommand=function(self)
-      self:hibernate(((60/bpm) * 0.333)*i)
-      self:linear(travel_times[i])
-      self:xy( dest_coords[i].x, dest_coords[i].y )
-      self:queuecommand("Done")
+      self:hibernate(((60/bpm) * 0.333)*i)           -- wait this peacuckoo for a little while so they don't all appear on-screen simultaneously
+      self:linear( travel_times[i] )                 -- apply a time tween appropriate for the hypotenuse length
+      self:xy( dest_coords[i].x, dest_coords[i].y )  -- tween the peacuckoo to their destination xy coordinates
+      self:queuecommand("Done")                      -- once they're off-screen, queue a command to cut them out of the render
     end,
     DoneCommand=function(self)
       self:hibernate(math.huge)

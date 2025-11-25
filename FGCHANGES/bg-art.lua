@@ -47,15 +47,16 @@ local art_pieces = {
    { 164.000,   true,       "brandon/peacock.jpg" },
    { 172.000,   true,       "catsudawn/pavo-lisa.jpg" },
    { 180.000,   true,       "teejusb/peacock.png" },
-   { 188.000,   true,       "placeholder.png" },
+   { 188.000,   true,       "placeholder.png" },  -- real bird
    { 196.000,   true,       "Chingching/peacock.jpg"},
-   { 212.000,   true,       "dbk2/fight/fight.lua"},
+   { 204.000,   true,       "placeholder.png" },  -- cyber peacock
+   { 212.000,   true,       "placeholder.png" },  -- hey guys
    { 228.000,   true,       "dbk2/oot.mp4"},
-   { 252.000,   true,       "placeholder.png" },
+   { 248.000,   true,       "dbk2/fight/fight.lua" },
    { 260.000,   true,       "placeholder.png" },
    { 268.000,   true,       "mrbrownjeremy/Peacuckoo3.lua" },
    { 278.000,   true,       "placeholder.png"}
-   -- { 275.000,   true,       "credits/credits.lua" },
+   -- { 278.000,   true,       "credits/credits.lua" },
 }
 
 -- ------------------------------------------------------
@@ -87,7 +88,7 @@ local function GenerateSprite(path)
       end
    end
 
-   sprite.HideCommand=function(self) self:visible(false) end
+   sprite.HideCommand=function(self) self:hibernate(math.huge) end
 
    return sprite
 end
