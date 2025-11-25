@@ -1,13 +1,10 @@
 local musicrate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 local bpm = 140
 
-local function Update(af, dt)
-
-end
-
 local af = Def.ActorFrame{}
-af.InitCommand=function(self) self:visible(false):SetUpdateFunction(Update) end
+af.InitCommand=function(self) self:visible(false) end
 af.ShowCommand=function(self) self:visible(true)  end
+af.HideCommand=function(self) self:hibernate(math.huge) end
 
 af[#af+1] = LoadActor("Peacuckoo3.mov")..{
   InitCommand=function(self)
@@ -23,55 +20,55 @@ af[#af+1] = LoadActor("Peacuckoo3.mov")..{
 
 -- ------------------------------------------------------
 
-local offset = 20
-local variation = 300
+local start_coords, dest_coords, travel_times = {}, {}, {}
 
-local start_coords = {
-  { x=-offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=-offset },
-  { x=_screen.w + offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=_screen.h + offset },
-  { x=-offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=-offset },
-  { x=_screen.w + offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=_screen.h + offset },
-  { x=-offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=-offset },
-  { x=_screen.w + offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=_screen.h + offset },
-  { x=-offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=-offset },
-  { x=_screen.w + offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=_screen.h + offset },
-}
+local num_peacuckoos = 32
+local pps       = 600    -- pixels-per-second we want peacuckoos traveling across the screen
+local offset    = 20     -- how many pixels offscreen does a peacuckoo need to not-be-seen?
+local variation = 300    -- how many pixels-away-from-center do we want peacuckoos starting-from and going-towards?
 
-local dest_coords = {
-  { x=_screen.w + offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=_screen.h + offset },
-  { x=-offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=-offset },
-  { x=_screen.w + offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=_screen.h + offset },
-  { x=-offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=-offset },
-  { x=_screen.w + offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=_screen.h + offset },
-  { x=-offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=-offset },
-  { x=_screen.w + offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=_screen.h + offset },
-  { x=-offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) },
-  { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=-offset },
-}
+local function SomewhereOffScreenLeft()
+  return { x=-offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) }
+end
 
+local function SomewhereOffScreenTop()
+  return { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=-offset }
+end
 
--- consider switching to update function + lerp() ?
+local function SomewhereOffScreenRight()
+  return { x=_screen.w + offset, y=_screen.cy + MersenneTwister.Random(-variation, variation) }
+end
 
-local pps = 600 -- pixels-per-second
-local travel_times = {}
+local function SomewhereOffScreenBottom()
+  return { x=_screen.cx + MersenneTwister.Random(-variation, variation), y=_screen.h + offset }
+end
 
-for i=1,#start_coords do
-  travel_times[i] = (math.sqrt(math.pow(math.abs(start_coords[i].y-dest_coords[i].y), 2) + math.pow(math.abs(start_coords[i].x-dest_coords[i].x), 2)) / pps)
+local function GetStartCoords(i)
+  if (i%4==1) then return SomewhereOffScreenLeft()   end
+  if (i%4==2) then return SomewhereOffScreenTop()    end
+  if (i%4==3) then return SomewhereOffScreenRight()  end
+  if (i%4==0) then return SomewhereOffScreenBottom() end
+end
+
+local function GetDestCoords(i)
+  if (i%4==1) then return SomewhereOffScreenRight()  end
+  if (i%4==2) then return SomewhereOffScreenBottom() end
+  if (i%4==3) then return SomewhereOffScreenLeft()   end
+  if (i%4==0) then return SomewhereOffScreenTop()    end
+end
+
+local function GetHypotenuseLength(i)
+  local a = math.abs(start_coords[i].y-dest_coords[i].y)
+  local b = math.abs(start_coords[i].x-dest_coords[i].x)
+  return math.sqrt(math.pow(a,2) + math.pow(b,2))
+end
+
+-- add peacuckoos that tween across the screen in the following order
+-- left→right, top→bottom, right→left, bottom→top, left→right, top→bottom, etc...
+for i=1,num_peacuckoos do
+  start_coords[i] = GetStartCoords(i)
+  dest_coords[i]  = GetDestCoords(i)
+  travel_times[i] = GetHypotenuseLength(i) / pps   -- divide hypotenuse length by pps to get tween time
 
   af[#af+1] = LoadActor("./Peacuckoo 3x1.png")..{
     Name=("Peacuckoo%d"):format(i),
@@ -95,7 +92,7 @@ for i=1,#start_coords do
       end
     end,
     ShowCommand=function(self)
-      self:hibernate(((60/bpm)*0.5)*i)
+      self:hibernate(((60/bpm) * 0.333)*i)
       self:linear(travel_times[i])
       self:xy( dest_coords[i].x, dest_coords[i].y )
       self:queuecommand("Done")
