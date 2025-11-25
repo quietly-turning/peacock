@@ -45,9 +45,9 @@ local art_pieces = {
    { 116.000,   true,       "mrbrownjeremy/Peacuckoo.mov" },
    { 124.000,   true,       "Mey-Z Daisy/ascii-peacock.mp4" },
    { 140.000,   true,       "mrbrownjeremy/Peacuckoo2.mp4" },
-   { 148.000,   true,       "brandon/peacock.jpg" },
-   { 156.000,   true,       "Draner/archipelago-peacock.jpg" },
-   { 164.000,   true,       "bogo/when they say theyve got that dawg in em.jpg" },
+   { 148.000,   true,       "Draner/archipelago-peacock.jpg" },
+   { 156.000,   true,       "bogo/when they say theyve got that dawg in em.jpg" },
+   { 164.000,   true,       "brandon/peacock.jpg" },
    { 172.000,   true,       "catsudawn/pavo-lisa.jpg" },
    { 180.000,   true,       "teejusb/peacock.png" },
    { 188.000,   true,       "placeholder.png" },
@@ -56,7 +56,8 @@ local art_pieces = {
    { 228.000,   true,       "dbk2/oot.mp4"},
    { 252.000,   true,       "placeholder.png" },
    { 260.000,   true,       "placeholder.png" },
-   { 268.000,   true,       "placeholder.png" },
+   { 268.000,   true,       "mrbrownjeremy/Peacuckoo3.lua" },
+   { 278.000,   true,       "placeholder.png"}
    -- { 275.000,   true,       "credits/credits.lua" },
 }
 
@@ -81,6 +82,11 @@ local function GenerateSprite(path)
       -- if it is a video, don't start playing it immediately, and don't loop playback
       if path:match(".mp4$") or path:match(".mov$") then
          self:animate(false):loop(false):diffusealpha(1):rate(musicrate)
+
+         -- don't try to filter-blur pixel animations
+         if path:match("mrbrownjeremy") then
+            self:SetTextureFiltering(false)
+         end
       end
    end
 
@@ -90,8 +96,6 @@ local function GenerateSprite(path)
 end
 
 local function Update(af, dt)
-   -- SM({GAMESTATE:GetSongBeat(), cur_actor, art_pieces[cur_actor][3]})
-
    if cur_actor <= #actors and GAMESTATE:GetSongBeat() > art_pieces[cur_actor][1] then
       -- fade in current art
       actors[cur_actor]:visible(true):smooth(art_pieces[cur_actor][2] and xfade or 0):diffusealpha(1)
