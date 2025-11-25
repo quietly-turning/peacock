@@ -1,9 +1,15 @@
 local bounce_applied = false
+local exit_applied  = false
 
 local function Update(af, dt)
   if bounce_applied==false and GAMESTATE:GetSongBeat() > 60 then
     af:playcommand("Bounce")
     bounce_applied = true
+  end
+
+  if exit_applied==false and GAMESTATE:GetSongBeat() > 65 then
+    af:playcommand("Exit")
+    exit_applied = true
   end
 end
 
@@ -28,6 +34,9 @@ af[#af+1] = LoadActor("./body-shockin.png")..{
   end,
   BounceCommand=function(self)
     self:thump():effectclock('beatnooffset'):effectperiod(1)
+  end,
+  ExitCommand=function(self)
+    self:bouncebegin(1):y(_screen.h * 1.5):zoom( self:GetZoom()*0.1)
   end
 }
 
