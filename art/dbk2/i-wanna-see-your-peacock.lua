@@ -71,13 +71,13 @@ local af = Def.ActorFrame{
 -- feathers
 
 local rotations = {-90,-60,-30, 30, 60, 90}
-local xOffsets = {800, 500, 200} -- 🥴
+local xOffsets = {800, 500, 200, 200, 500, 800} -- 🥴
 local feathersAF = Def.ActorFrame{}
 
 for i=1,6 do
   feathersAF[#feathersAF+1] = Def.BitmapText{
     File=fontpath,
-    Text="\n\nPEACOCK\n\n\n",
+    Text=i<4 and "\n\nPEACOCK\n\n\n" or "\n\n\nPEAKCOCK\n\n",
     InitCommand=function(self)
       self:align(0,0.5):diffuseleftedge({0, 0.2, 0.8, 1}):diffuserightedge({0,0.8,0.2,1})
       self:visible(false)
