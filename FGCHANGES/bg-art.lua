@@ -7,7 +7,7 @@ return {
    {  44.000,          true,        "Mey-Z Daisy/a turkey and a peacock in love.jpg" },
    {  52.000,          false,       "alex/peacock.lua" },
    {  68.000,          true,        "catsudawn/peacock/peacock.lua"},
-   {  84.000,          true,        "bogo/peacocklef-.png" },
+   {  84.000,          true,        "bogo/peacocklef-.lua" },
    {  92.000,          true,        "silverwolfstar/peacock.jpg" },
    { 100.000,          true,        "Mey-Z Daisy/peacock-o-lantern.jpg" },
    { 108.000,          true,        "bogo/mimi.jpg" },
