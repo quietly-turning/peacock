@@ -2,9 +2,6 @@ local musicrate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 local bpm = 140
 
 local af = Def.ActorFrame{}
-af.InitCommand=function(self) self:visible(false) end
-af.ShowCommand=function(self) self:visible(true)  end
-af.HideCommand=function(self) self:hibernate(math.huge) end
 
 af[#af+1] = LoadActor("Peacuckoo3.mov")..{
   InitCommand=function(self)

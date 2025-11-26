@@ -1,3 +1,5 @@
+local WideScale = unpack(...)
+
 local bitmaptextActor
 local cur_index = 1
 
@@ -51,10 +53,6 @@ local function Update(af, dt)
   if feathers_tweened==false and GAMESTATE:GetSongBeat() > 16 then
     af:playcommand('RevealFeathers')
     feathers_tweened = true
-  end
-
-  if GAMESTATE:GetSongBeat() > 22 then
-    af:hibernate(math.huge)
   end
 end
 

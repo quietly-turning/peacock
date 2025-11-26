@@ -1,9 +1,6 @@
 local WideScale = unpack(...)
 
 local af = Def.ActorFrame{}
-af.ShowCommand=function(self) self:visible(true) end
-af.HideCommand=function(self) self:hibernate(math.huge) end
-
 
 for i=1,15 do
   af[#af+1] = Def.ActorFrame{

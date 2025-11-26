@@ -207,13 +207,20 @@ args[#args+1] = Def.Actor({ InitCommand=function(self) self:sleep(999) end })
 
 for _, piece in ipairs(art_pieces) do
 
+   -- if the art is a lua file, pass it the WideScale function in case the Lua needs it
+   -- add the animation to the main ActorFrame here
+   -- and give it a common OnCommand + HideCommand
    if (piece[3]:match(".lua$")) then
       args[#args+1] = LoadActor("../art/"..piece[3], {WideScale})..{
-         OnCommand=function(self)
+         InitCommand=function(self)
             actors[#actors+1] = self
             self:visible(false)
-         end
+         end,
+         ShowCommand=function(self) self:visible(true) end,
+         HideCommand=function(self) self:hibernate(math.huge) end
       }
+
+   -- if the art is a [png, jpg, mp4, mov],
    else
       args[#args+1] = GenerateSprite(piece[3])
    end

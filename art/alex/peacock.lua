@@ -34,8 +34,6 @@ end
 
 local af = Def.ActorFrame{}
 af.InitCommand=function(self)   self:SetUpdateFunction( Update ) end
-af.ShowCommand=function(self) self:visible(true) end
-af.HideCommand=function(self) self:hibernate(math.huge) end
 
 af[#af+1] = Def.Quad{
   OnCommand=function(self)

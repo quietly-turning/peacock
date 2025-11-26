@@ -1,6 +1,4 @@
 local af = Def.ActorFrame{}
-af.ShowCommand=function(self) self:visible(true) end
-af.HideCommand=function(self) self:hibernate(math.huge) end
 
 af[#af+1] = LoadActor("./bg.png")..{
   InitCommand=function(self)
