@@ -13,7 +13,7 @@ local rotation_applied = false
 local fadeout_applied  = false
 local feathers_tweened = false
 
-local START_ZOOM = 0.585
+local START_ZOOM = WideScale(0.425, 0.585)
 local START_X    = 30
 local START_Y    = 460
 
@@ -41,12 +41,12 @@ local function Update(af, dt)
   end
 
   if zoom_out_applied==false and GAMESTATE:GetSongBeat() > 11 then
-    af:finishtweening():smooth(((60/bpm)*3)*musicrate):zoom(0.255):y(240)
+    af:finishtweening():smooth(((60/bpm)*3)*musicrate):zoom( WideScale(0.2, 0.255) ):y(240)
     zoom_out_applied = true
   end
 
   if rotation_applied==false and GAMESTATE:GetSongBeat() > 15 then
-    af:finishtweening():smooth(((60/bpm)*2)*musicrate):zoom(0.09):rotationz(-90):xy(_screen.cx, _screen.h-20)
+    af:finishtweening():smooth(((60/bpm)*2)*musicrate):zoom(WideScale( 0.085,0.09) ):rotationz(-90):xy(_screen.cx, _screen.h-20)
     rotation_applied = true
   end
 
