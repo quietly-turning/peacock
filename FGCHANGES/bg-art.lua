@@ -41,6 +41,7 @@ local art_pieces = {
    { 108.000,   true,       "bogo/mimi.jpg" },
    { 116.000,   true,       "mrbrownjeremy/Peacuckoo.mov" },
    { 124.000,   true,       "Mey-Z Daisy/ascii-peacock.mp4" },
+   { 132.00,    true,       "mrbrownjeremy/CyberPeacock.mp4" },
    { 140.000,   true,       "mrbrownjeremy/Peacuckoo2.mp4" },
    { 148.000,   true,       "Draner/archipelago-peacock.jpg" },
    { 156.000,   true,       "bogo/when they say theyve got that dawg in em.jpg" },
@@ -49,7 +50,7 @@ local art_pieces = {
    { 180.000,   true,       "teejusb/peacock.png" },
    { 188.000,   true,       "placeholder.png" },  -- real bird
    { 196.000,   true,       "Chingching/peacock.jpg"},
-   { 204.000,   true,       "placeholder.png" },  -- cyber peacock
+   { 204.000,   true,       "placeholder.png" },
    { 212.000,   true,       "placeholder.png" },  -- hey guys
    { 228.000,   true,       "dbk2/oot.mp4"},
    { 248.000,   true,       "dbk2/fight/fight.lua" },
