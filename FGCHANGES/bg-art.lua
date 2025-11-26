@@ -1,16 +1,7 @@
--- redefining this here with a hardcoded SCREEN_WIDTH in case someone is using 5.1's new default theme
--- there's a better way that will work for old themes and new themes alike, but I'm too tired to figure it out right now.
-local WideScale = function(AR4_3, AR16_9)
-   -- return scale( SCREEN_WIDTH, 640, 854, AR4_3, AR16_9 )
-   local w = 480 * PREFSMAN:GetPreference("DisplayAspectRatio")
-   return scale( w, 640, 854, AR4_3, AR16_9 )
-end
-
 -- ------------------------------------------------------
 -- the bpm of Katy Perry's Peacock
 local bpm = GAMESTATE:GetCurrentSong():GetDisplayBpms()[1]
--- music rate chosen by the player(s)
-local musicrate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+
 
 -- possible crossfade duration
 local crossfades = {
@@ -19,8 +10,9 @@ local crossfades = {
    sixteenth_note = (60/bpm) * 0.25,
 }
 
---
 local xfade = crossfades.sixteenth_note
+
+local WideScale, IsEditMode, GetPlayerAF, GenerateSprite = unpack(LoadActor("./helpers.lua"))
 
 -- ------------------------------------------------------
 
@@ -62,38 +54,6 @@ local art_pieces = {
 
 -- ------------------------------------------------------
 
-local function GenerateSprite(path)
-
-   local sprite = LoadActor( ("../art/%s"):format(path) )
-
-   sprite.OnCommand=function(self)
-      -- add reference to this scene to convenience table
-      actors[#actors+1] = self
-
-      -- don't draw and set alpha of 0 on each sprite to being
-      self:visible(false):diffusealpha(0)
-
-      -- zoom each sprite based on the width of the original png/jpg/mp4
-      -- so that it fits perfectly in 16:9 and crop the sides in 4:3
-      local src_w = self:GetTexture():GetSourceWidth()
-      self:Center():zoom(_screen.w/WideScale(src_w*0.75,src_w))
-
-      -- if it is a video, don't start playing it immediately, and don't loop playback
-      if path:match(".mp4$") or path:match(".mov$") then
-         self:animate(false):loop(false):diffusealpha(1):rate(musicrate)
-
-         -- don't try to filter-blur pixel animations
-         if path:match("mrbrownjeremy") then
-            self:SetTextureFiltering(false)
-         end
-      end
-   end
-
-   sprite.HideCommand=function(self) self:hibernate(math.huge) end
-
-   return sprite
-end
-
 local function Update(af, dt)
    if cur_actor <= #actors and GAMESTATE:GetSongBeat() > art_pieces[cur_actor][1] then
       -- fade in current art
@@ -112,62 +72,6 @@ local function Update(af, dt)
    end
 end
 
-local function IsEditMode()
-   local screen = SCREENMAN:GetTopScreen()
-   if not screen then
-      SCREENMAN:SystemMessage("IsEditMode() check failed to run because there is no Screen yet.\nYou should call this function from an OnCommand instead of an InitCommand so that it's more helpful.")
-      return nil
-   end
-
-   return (THEME:GetMetric(screen:GetName(), "Class") == "ScreenEdit")
-end
-
-
-local function GetPlayerAF(pn)
-   local screen = SCREENMAN:GetTopScreen()
-   if not screen then return false end
-
-   local playerAF = nil
-
-   -- Get the player ActorFrame on ScreenGameplay
-   -- It's a direct child of the screen and named "PlayerP1" for P1
-   -- and "PlayerP2" for P2.
-   -- This naming convention is hardcoded in the SM5 engine.
-   --
-   -- ScreenEdit does not name its player ActorFrame, but we can still find it.
-
-   -- find the player ActorFrame in edit + practice mode
-   if (THEME:GetMetric(screen:GetName(), "Class") == "ScreenEdit") then
-      local notefields = {}
-      -- loop through all nameless children of `screen`
-      -- and find the one that contains the NoteField
-      -- which is thankfully still named "NoteField"
-      for _,nameless_child in ipairs(screen:GetChild("")) do
-         if nameless_child:GetChild("NoteField") then
-            notefields[#notefields+1] = nameless_child
-         end
-      end
-
-      -- needed for practice mode
-      -- If there is only one side joined always return the first one.
-      if #notefields == 1 then
-         playerAF = notefields[1]
-      -- If there are two sides joined, return the one that matches the player number.
-      else
-         playerAF = notefields[PlayerNumber:Reverse()["PlayerNumber_"..pn]+1]
-      end
-
-   -- find the player ActorFrame in gameplay
-   else
-      local player_af = screen:GetChild("Player"..pn)
-      if player_af then
-         playerAF = player_af
-      end
-   end
-
-   return playerAF
-end
-
 -- ------------------------------------------------------
 
 local args = {
@@ -184,12 +88,12 @@ local args = {
          if layers.In then layers.In:visible(false) end
 
          for name,layer in pairs(layers) do
+            -- we want to keep some layers visible
             if not (name=="SongBackground" or name=="SongForeground" or name=="PlayerP1" or name=="PlayerP2") then
                layer:smooth(1.5):diffusealpha(0)
             end
          end
       end
-
 
       local p1AF = GetPlayerAF("P1")
       local p2AF = GetPlayerAF("P2")
@@ -220,9 +124,9 @@ for _, piece in ipairs(art_pieces) do
          HideCommand=function(self) self:hibernate(math.huge) end
       }
 
-   -- if the art is a [png, jpg, mp4, mov],
+   -- if the art is a [png, jpg, mp4, mov]
    else
-      args[#args+1] = GenerateSprite(piece[3])
+      args[#args+1] = GenerateSprite(piece[3], actors)
    end
 end
 
