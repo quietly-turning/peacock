@@ -9,7 +9,7 @@
 #ORIGIN:;
 #CREDIT:;
 #BANNER:_bn-Peacock.mp4;
-#BACKGROUND:;
+#BACKGROUND:BGCHANGES/black.png;
 #PREVIEWVID:;
 #JACKET:;
 #CDIMAGE:;
@@ -32,12 +32,10 @@
 #SCROLLS:0.000=1.000;
 #FAKES:;
 #LABELS:0.000=Song Start;
-#BGCHANGES:;
-#FGCHANGES:0.000=FGCHANGES/Slideshow.lua=1.000=0=0=1=====,
-;
+#BGCHANGES:0.000=BGCHANGES/black.png=1.000=0=0=1=====;
+#FGCHANGES:0.000=FGCHANGES/Slideshow.lua=1.000=0=0=1=====;
 #KEYSOUNDS:;
-#ATTACKS:
-;
+#ATTACKS:;
 
 //---------------dance-single - ----------------
 #NOTEDATA:;
