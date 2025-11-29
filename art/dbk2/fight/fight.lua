@@ -18,8 +18,9 @@ af[#af+1] = Def.Quad{
 -- -------------------------------------------------
 -- fighter portraits
 
-local w = 480
+local w = 400
 local c = {1,1,1,1}
+local fighter_zoom = 0.9
 
 -- peacock
 af[#af+1] = Def.ActorMultiVertex{
@@ -28,14 +29,15 @@ af[#af+1] = Def.ActorMultiVertex{
     self:LoadTexture(("%sart/dbk2/fight/fighters.png"):format(base_path))
     self:SetDrawState({Mode="DrawMode_Triangles"})
     self:SetVertices({
-      {{0,         0, 0}, c, {0,0}},
-      {{w,         0, 0}, c, {1,0}},
-      {{0, _screen.h, 0}, c, {0,1}}
+      {{0, _screen.h-w, 0}, c, {1,0}},
+      {{0, _screen.h,   0}, c, {0,0}},
+      {{w, _screen.h,   0}, c, {0,1}}
     })
-    self:x(-w)
+    self:x(-w):zoom(fighter_zoom)
+    self:y((_screen.h * (1/fighter_zoom)) - _screen.h)
   end,
   ShowCommand=function(self)
-    self:bounceend(0.25):x(-50)
+    self:bounceend(0.25):x(0)
   end
 }
 
@@ -46,14 +48,15 @@ af[#af+1] = Def.ActorMultiVertex{
     self:SetTexture( self:GetParent():GetChild("Peacock-fighter"):GetTexture() )
     self:SetDrawState({Mode="DrawMode_Triangles"})
     self:SetVertices({
-      {{_screen.w,           0, 0}, c, {1,0}},
+      {{_screen.w,   _screen.h-w, 0}, c, {1,0}},
       {{_screen.w,   _screen.h, 0}, c, {1,1}},
       {{_screen.w-w, _screen.h, 0}, c, {0,1}}
     })
-    self:x(w)
+    self:x(w * 1/fighter_zoom):zoom(fighter_zoom)
+    self:y((_screen.h * (1/fighter_zoom)) - _screen.h)
   end,
   ShowCommand=function(self)
-    self:sleep(0.25):bounceend(0.2):x(50)
+    self:sleep(0.25):bounceend(0.2):x(_screen.w*(1/fighter_zoom) - _screen.w)
   end
 }
 -- -------------------------------------------------
