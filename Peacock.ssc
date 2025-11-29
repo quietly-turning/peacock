@@ -11,7 +11,7 @@
 #BANNER:_bn-Peacock.mp4;
 #BACKGROUND:BGCHANGES/black.png;
 #PREVIEWVID:;
-#JACKET:;
+#JACKET:_jk-Peacock.mp4;
 #CDIMAGE:;
 #DISCIMAGE:;
 #LYRICSPATH:;
@@ -32,7 +32,8 @@
 #SCROLLS:0.000=1.000;
 #FAKES:;
 #LABELS:0.000=Song Start;
-#BGCHANGES:0.000=BGCHANGES/black.png=1.000=0=0=1=====;
+#BGCHANGES:0.000=BGCHANGES/black.png=1.000=0=0=1=====,
+99999=-nosongbg-=1.000=0=0=0;
 #FGCHANGES:0.000=FGCHANGES/Slideshow.lua=1.000=0=0=1=====;
 #KEYSOUNDS:;
 #ATTACKS:;
@@ -672,4 +673,127 @@ M100
 0100
 0010
 0000
+;
+
+//---------------dance-single - ----------------
+#NOTEDATA:;
+#CHARTNAME:;
+#STEPSTYPE:dance-single;
+#DESCRIPTION:;
+#CHARTSTYLE:;
+#DIFFICULTY:Beginner;
+#METER:1;
+#RADARVALUES:0.002374,0.018069,0.008308,0.000000,0.000000,2.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.002374,0.018069,0.008308,0.000000,0.000000,2.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000;
+#CREDIT:;
+#NOTES:
+// measure 0
+0000
+0000
+0000
+0000
+,  // measure 1
+0000
+0000
+0000
+0000
+,  // measure 2
+0000
+0000
+0000
+0000
+,  // measure 3
+0000
+0000
+0000
+0000
+,  // measure 4
+0000
+0000
+0000
+0000
+,  // measure 5
+0000
+0000
+0000
+0000
+,  // measure 6
+0000
+0000
+0000
+0000
+,  // measure 7
+0000
+0000
+0000
+0000
+,  // measure 8
+0000
+0000
+0000
+0000
+,  // measure 9
+0000
+0000
+0000
+0000
+,  // measure 10
+0000
+0000
+0000
+0000
+,  // measure 11
+0000
+0000
+0000
+0000
+,  // measure 12
+0000
+0000
+0000
+0000
+,  // measure 13
+0000
+0000
+0000
+0000
+,  // measure 14
+0000
+0000
+0000
+0000
+,  // measure 15
+0000
+0000
+0000
+0000
+,  // measure 16
+0000
+0000
+0000
+0000
+,  // measure 17
+0000
+0000
+0000
+0000
+,  // measure 18
+0000
+0000
+0000
+0000
+,  // measure 19
+0000
+0000
+0000
+0000
+,  // measure 20
+0000
+0000
+0000
+0000
+,  // measure 21
+0000
+0000
+0000
+1001
 ;
