@@ -11,7 +11,7 @@ return {
    {  92.000,          true,        "silverwolfstar/peacock.lua" },
    { 100.000,          true,        "Mey-Z Daisy/peacock-o-lantern.jpg" },
    { 108.000,          true,        "bogo/mimi.jpg" },
-   { 116.000,          true,        "mrbrownjeremy/Peacuckoo.mov" },
+   { 116.000,          true,        "mrbrownjeremy/Peacuckoo.mp4" },
    { 124.000,          true,        "Mey-Z Daisy/ascii-peacock.mp4" },
    { 132.00,           true,        "mrbrownjeremy/CyberPeacock.mp4" },
    { 140.000,          true,        "mrbrownjeremy/Peacuckoo2.mp4" },
@@ -27,7 +27,7 @@ return {
    { 228.000,          true,        "dbk2/oot.mp4"},
    { 248.000,          true,        "dbk2/fight/fight.lua" },
    { 260.000,          true,        "placeholder.png" },
-   { 268.000,          true,        "mrbrownjeremy/Peacuckoo3.lua" },
+   { 268.000,          true,        "mrbrownjeremy/Peacuckoo3.mp4" },
    { 278.000,          true,        "placeholder.png"}
    -- { 278.000,       true,        "credits/credits.lua"
 }
