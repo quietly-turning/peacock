@@ -4,7 +4,7 @@ local bitmaptextActor
 local cur_index = 1
 
 local bpm = 140
-local musicrate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 
 local fontpath = GAMESTATE:GetCurrentSong():GetSongDir().."art/dbk2/Arial Black/Arial Black 128px.ini"
 
