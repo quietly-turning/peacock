@@ -1,6 +1,25 @@
+local WideScale = unpack(...)
 local base_path = GAMESTATE:GetCurrentSong():GetSongDir()
+local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+
+local actions = {
+  {253.735, "Flash"},
+  {256, "ShowFightText"},
+  {258, "WhyNotBoth"   },
+}
+local actions_index = 1
+
+local function Update(af, dt)
+  if (actions_index <= #actions) and (GAMESTATE:GetSongBeat() > actions[actions_index][1]) then
+    af:playcommand(actions[actions_index][2])
+    actions_index = actions_index + 1
+  end
+end
 
 local af = Def.ActorFrame{}
+af.OnCommand=function(self)
+  self:SetUpdateFunction( Update )
+end
 
 af[#af+1] = LoadActor("./bg.png")..{
   InitCommand=function(self)
@@ -12,7 +31,7 @@ af[#af+1] = LoadActor("./bg.png")..{
 af[#af+1] = Def.Quad{
   Name="Flash",
   InitCommand=function(self) self:Center():FullScreen():diffuse(1,0,0,0) end,
-  FlashCommand=function(self) self:diffusealpha(1):decelerate(1):diffuse(1,1,1,0) end
+  FlashCommand=function(self) self:diffusealpha(1):decelerate(1*musicrate):diffuse(1,1,1,0) end
 }
 
 -- -------------------------------------------------
@@ -37,7 +56,7 @@ af[#af+1] = Def.ActorMultiVertex{
     self:y((_screen.h * (1/fighter_zoom)) - _screen.h)
   end,
   ShowCommand=function(self)
-    self:bounceend(0.25):x(0)
+    self:bounceend(0.25*musicrate):x(0)
   end
 }
 
@@ -56,7 +75,8 @@ af[#af+1] = Def.ActorMultiVertex{
     self:y((_screen.h * (1/fighter_zoom)) - _screen.h)
   end,
   ShowCommand=function(self)
-    self:sleep(0.25):bounceend(0.2):x(_screen.w*(1/fighter_zoom) - _screen.w)
+    self:sleep(0.25*musicrate)
+    self:bounceend(0.2*musicrate):x(_screen.w*(1/fighter_zoom) - _screen.w)
   end
 }
 -- -------------------------------------------------
@@ -71,7 +91,7 @@ af[#af+1] = LoadActor("./barbs 1x2.png")..{
     self:cropright(1)
   end,
   ShowCommand=function(self)
-    self:sleep(1):smooth(0.2):cropright(0)
+    self:sleep(1*musicrate):smooth(0.2*musicrate):cropright(0)
   end
 }
 
@@ -91,11 +111,7 @@ af2[#af2+1] = Def.Sprite{
     self:zoom(0)
   end,
   ShowCommand=function(self)
-    self:sleep(2):accelerate(0.15):zoom(1):smooth(0.15):rotationz(2):accelerate(0.15):rotationz(0):zoom(0.5)
-    self:queuecommand("InitiateFlash")
-  end,
-  InitiateFlashCommand=function(self)
-    self:GetParent():GetParent():playcommand("Flash")
+    self:sleep(2*musicrate):accelerate(0.15*musicrate):zoom(1):smooth(0.15*musicrate):rotationz(2):accelerate(0.15*musicrate):rotationz(0):zoom(0.5)
   end,
 }
 -- ghost "there can be only one"
@@ -108,7 +124,7 @@ af2[#af2+1] = Def.Sprite{
     self:diffusealpha(0)
   end,
   FlashCommand=function(self)
-    self:diffusealpha(0.5):decelerate(1):zoom(0.65):diffusealpha(0)
+    self:diffusealpha(0.5):decelerate(1*musicrate):zoom(0.65):diffusealpha(0)
   end
 }
 
@@ -119,8 +135,8 @@ af[#af+1] = LoadActor("./fight.png")..{
   InitCommand=function(self)
     self:Center():zoom(0)
   end,
-  FlashCommand=function(self)
-    self:sleep(1.2):accelerate(0.2):zoom(0.75)
+  ShowFightTextCommand=function(self)
+    self:accelerate(0.2*musicrate):zoom(WideScale(0.5,0.75))
   end
 }
 
@@ -129,8 +145,8 @@ af[#af+1] = LoadActor("peacocks-and-melons.png")..{
   InitCommand=function(self)
     self:xy(-300,_screen.cy):zoom(0.6)
   end,
-  FlashCommand=function(self)
-    self:sleep(2):smooth(0.8):rotationz(720):x(_screen.w+300)
+  WhyNotBothCommand=function(self)
+    self:smooth(0.8*musicrate):rotationz(720):x(_screen.w+300)
   end
 }
 
