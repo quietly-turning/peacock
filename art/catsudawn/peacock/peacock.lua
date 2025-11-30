@@ -16,16 +16,18 @@ local center_point = 7  -- last frame in the 4x2 set
 
 for i=0,13 do
   af[#af+1] = Def.ActorFrame{
+    Condition=(i ~= center_point),  -- skip bg-frame7 in this for-loop; it's handled by LoadActor() below
+
     OnCommand=function(self)
+      -- animate each bg piece changing colors by diffuseshift-ing its parent AF
       self:diffuseshift()
-          :effectoffset(i*(60/bpm))
+          :effectoffset(i*(60/bpm)*musicrate)
           :effectclock("beat")
           :effectcolor1(color("#4573B1"))
           :effectcolor2(color("#E4FFCA"))
     end,
 
     Def.Sprite{
-      Condition=(i ~= center_point),  -- already handled by LoadActor() above
       OnCommand=function(self)
         self:SetTexture(texture)
         self:animate(false):setstate(i % center_point):SetTextureFiltering(false)
@@ -40,8 +42,9 @@ for i=0,13 do
           self:x(_screen.cx+80) -- fudging some numbers to make the assets work while animated
         end
 
+        -- animate the bg pieces each growing/shrinking independently
         self:pulse()
-        self:effectoffset(i*(60/bpm))
+        self:effectoffset(i*(60/bpm)*musicrate)
         self:effectclock('beat')
         self:effectmagnitude(1,1.025,0)
       end
@@ -50,21 +53,31 @@ for i=0,13 do
 end
 
 -- middle piece of bg
-af[#af+1] = LoadActor("./background 4x2.png")..{
-  InitCommand=function(self)
-    texture = self:GetTexture()
-
-    self:animate(false):setstate(7):Center():SetTextureFiltering(true)
-    self:zoomtoheight(_screen.h)
-    self:zoomtowidth( frame_dimension * self:GetZoomedHeight()/frame_dimension )
-  end,
+af[#af+1] = Def.ActorFrame{
   ShowCommand=function(self)
     self:diffuseshift()
-    self:effectoffset(60/bpm)
+    self:effectoffset((60/bpm) * musicrate)
     self:effectclock("beat")
     self:effectcolor1(color("#4573B1"))
     self:effectcolor2(color("#8EC5CC"))
-  end
+  end,
+
+
+  LoadActor("./background 4x2.png")..{
+    InitCommand=function(self)
+      texture = self:GetTexture()
+
+      self:animate(false):setstate(7):Center():SetTextureFiltering(true)
+      self:zoomtoheight(_screen.h)
+      self:zoomtowidth( frame_dimension * self:GetZoomedHeight()/frame_dimension )
+    end,
+    ShowCommand=function(self)
+      self:pulse()
+      self:effectoffset((60/bpm) * musicrate)
+      self:effectclock('beat')
+      self:effectmagnitude(1,1.025,0)
+    end
+  }
 }
 
 af[#af+1] = LoadActor("./peacock.png")..{
