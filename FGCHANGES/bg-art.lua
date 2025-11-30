@@ -16,12 +16,12 @@ return {
    { 132.00,           true,        "mrbrownjeremy/CyberPeacock.mp4" },
    { 140.000,          true,        "mrbrownjeremy/Peacuckoo2.mp4" },
    { 148.000,          true,        "Draner/archipelago-peacock.jpg" },
-   { 156.000,          true,        "bogo/when they say theyve got that dawg in em.jpg" },
+   { 156.000,          true,        "bogo/when they say theyve got that dawg in em.lua" },
    { 164.000,          true,        "brandon/peacock.jpg" },
    { 172.000,          true,        "catsudawn/pavo-lisa.jpg" },
    { 180.000,          true,        "teejusb/peacock.lua" },
    { 188.000,          true,        "placeholder.png" },  -- real bird
-   { 196.000,          true,        "Chingching/peacock.jpg"},
+   { 196.000,          true,        "Chingching/peacock.lua"},
    { 204.000,          true,        "placeholder.png" }, -- cross stitch
    { 212.000,          true,        "pung/hey-guys/hey-guys.lua" },
    { 228.000,          true,        "dbk2/oot.mp4"},
