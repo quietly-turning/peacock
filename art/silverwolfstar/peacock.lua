@@ -9,7 +9,7 @@ af[#af+1] = LoadActor("./peacock.jpg")..{
     self:Center()
     local src_h = self:GetTexture():GetSourceHeight()
     local src_w = self:GetTexture():GetSourceWidth()
-    self:zoomtoheight(_screen.h - 64)
+    self:zoomtoheight(_screen.h - 128)
     self:zoomtowidth( src_w * self:GetZoomedHeight()/src_h )
   end
 }
