@@ -7,7 +7,11 @@
 -- for an example use, see START_ZOOM in i-wanna-see-your-peacock.lua
 local function WideScale(AR4_3, AR16_9)
    local w = 480 * PREFSMAN:GetPreference("DisplayAspectRatio")
-   return clamp(scale( w, 640, 854, AR4_3, AR16_9 ), AR4_3, AR16_9)
+   local scaled_num  = scale( w, 640, 854, AR4_3, AR16_9 )
+   local low  =  math.min(AR4_3, AR16_9)
+   local high =  math.max(AR4_3, AR16_9)
+   local clamped_num = clamp(scaled_num, low, high)
+   return clamped_num
 end
 
 
