@@ -2,39 +2,23 @@ local bpm = GAMESTATE:GetCurrentSong():GetDisplayBpms()[1]
 local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 local beat_duration = (60/bpm) * musicrate
 
-local texture
-local eye_poppin, head_turnin, body_shockin = false, false, false
-
-local bounce_applied = false
-local exit_applied   = false
+local actions_index = 1
+local actions = {
+  {54, "PopEyes"},
+  {56, "TurnHead"},
+  {58, "ShockBody"},
+  {60, "Bounce"},
+  {65, "Exit"}
+}
 
 local function Update(af, dt)
-  if eye_poppin==false and GAMESTATE:GetSongBeat() > 54 then
-    af:playcommand("PopEyes")
-    eye_poppin = true
-  end
-
-  if head_turnin==false and GAMESTATE:GetSongBeat() > 56 then
-    af:playcommand("TurnHead")
-    head_turnin = true
-  end
-
-  if body_shockin==false and GAMESTATE:GetSongBeat() > 58 then
-    af:playcommand("ShockBody")
-    body_shockin = true
-  end
-
-  if bounce_applied==false and GAMESTATE:GetSongBeat() > 60 then
-    af:playcommand("Bounce")
-    bounce_applied = true
-  end
-
-  if exit_applied==false and GAMESTATE:GetSongBeat() > 65 then
-    af:playcommand("Exit")
-    exit_applied = true
+  if actions[actions_index] and GAMESTATE:GetSongBeat() > actions[actions_index][1] then
+    af:playcommand(actions[actions_index][2])
+    actions_index = actions_index + 1
   end
 end
 
+-- ------------------------------------------------------
 
 local af = Def.ActorFrame{}
 af.InitCommand=function(self) self:SetUpdateFunction( Update ) end
@@ -45,7 +29,6 @@ af[#af+1] = Def.Quad{
     self:Center():FullScreen()
   end,
   ExitCommand=function(self)
-
     self:sleep(beat_duration*1.5)
     self:accelerate(beat_duration*0.5):diffuse(color("#74A376"))
   end
