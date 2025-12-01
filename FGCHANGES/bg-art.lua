@@ -22,7 +22,7 @@ return {
    { 180.000,          true,        "teejusb/peacock.lua" },
    { 188.000,          true,        "placeholder.png" },  -- real bird
    { 196.000,          true,        "Chingching/peacock.lua"},
-   { 204.000,          true,        "placeholder.png" }, -- cross stitch
+   { 204.000,          true,        "Forn/cross-stitch.jpg" },
    { 212.000,          true,        "pung/hey-guys/hey-guys.lua" },
    { 228.000,          true,        "dbk2/oot.mp4"},
    { 248.000,          true,        "dbk2/fight/fight.lua" },
