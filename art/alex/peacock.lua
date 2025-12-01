@@ -106,7 +106,7 @@ af[#af+1] = Def.Sprite{
     self:thump():effectclock('beat'):effectperiod(1)
   end,
   ExitCommand=function(self)
-    self:bouncebegin(1):y(_screen.h * 1.5):zoom( self:GetZoom()*0.1)
+    self:SetTextureFiltering(false):stopeffect():smooth(1):zoom(300):y(self:GetY()+1000)
   end
 }
 

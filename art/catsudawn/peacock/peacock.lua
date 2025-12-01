@@ -82,12 +82,15 @@ af[#af+1] = Def.ActorFrame{
 
 af[#af+1] = LoadActor("./peacock.png")..{
   InitCommand=function(self)
-    self:Center():zoom(0)
+    self:SetTextureFiltering(false):Center():zoom(300)
   end,
-  OnCommand=function(self)
+  ShowCommand=function(self)
     local src_w = self:GetTexture():GetSourceWidth()
-    self:bounceend(0.2):zoom(_screen.w/WideScale(src_w*0.75,src_w))
+    self:smooth(0.4):zoom(0.375):queuecommand("Filter")
   end,
+  FilterCommand=function(self)
+    self:SetTextureFiltering(true)
+  end
 }
 
 return af
