@@ -9,6 +9,10 @@ local step_sleep_duration  = (60/bpm) * 0.5 * musicrate
 local walk_time = step_sleep_duration*7.9
 local text_reveal_duration = 0.3 * musicrate
 
+af[#af+1] = Def.Quad{
+  InitCommand=function(self) self:diffuse(0,0,0,1):FullScreen() end
+}
+
 af[#af+1] = LoadActor("grass.png")..{
   InitCommand=function(self)
     local texture = self:GetTexture()
