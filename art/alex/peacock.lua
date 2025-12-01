@@ -1,3 +1,7 @@
+local bpm = GAMESTATE:GetCurrentSong():GetDisplayBpms()[1]
+local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+local beat_duration = (60/bpm) * musicrate
+
 local texture
 local eye_poppin, head_turnin, body_shockin = false, false, false
 
@@ -33,13 +37,18 @@ end
 
 
 local af = Def.ActorFrame{}
-af.InitCommand=function(self)   self:SetUpdateFunction( Update ) end
+af.InitCommand=function(self) self:SetUpdateFunction( Update ) end
 
 af[#af+1] = Def.Quad{
   OnCommand=function(self)
     self:diffuse(color("#EFE4B0"))
     self:Center():FullScreen()
   end,
+  ExitCommand=function(self)
+
+    self:sleep(beat_duration*1.5)
+    self:accelerate(beat_duration*0.5):diffuse(color("#74A376"))
+  end
 }
 
 
@@ -106,7 +115,8 @@ af[#af+1] = Def.Sprite{
     self:thump():effectclock('beat'):effectperiod(1)
   end,
   ExitCommand=function(self)
-    self:SetTextureFiltering(false):stopeffect():smooth(1):zoom(300):y(self:GetY()+1000)
+    self:stopeffect()
+    self:bouncebegin(beat_duration*2):y(_screen.h * 1.5):zoom( self:GetZoom()*0.1)
   end
 }
 
