@@ -26,7 +26,7 @@ return {
    { 212.000,          true,        "pung/hey-guys/hey-guys.lua" },
    { 228.000,          true,        "dbk2/oot.mp4"},
    { 248.000,          true,        "dbk2/fight/fight.lua" },
-   { 260.000,          true,        "placeholder.png" }, -- montage
+   { 260.000,          true,        "group/group-montage.lua" },
    { 268.000,          true,        "mrbrownjeremy/Peacuckoo3.mp4" },
    { 278.000,          true,        "placeholder.png"}  -- credits
    -- { 278.000,       true,        "credits/credits.lua"
