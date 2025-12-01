@@ -93,7 +93,7 @@ af[#af+1] = Def.ActorFrame{
   },
 
   -- a cat
-  LoadActor("../../Lane/cat.png")..{
+  LoadActor("../../yatsokan/cat.png")..{
     InitCommand=function(self)
         self:zoom(0.275):valign(1):xy(_screen.w-150, _screen.h)
     end
@@ -137,7 +137,7 @@ af[#af+1] = Def.ActorFrame{
   InitCommand=function(self) self:visible(false):rotationz(180):xy(_screen.cx+100, -300):zoom(0.25) end,
   DoneWalkingCommand=function(self) self:visible(true):sleep(2.5*musicrate):decelerate(1*musicrate):y(100) end,
 
-  LoadActor("../../Lane/peacock.png")..{
+  LoadActor("../../yatsokan/peacock.png")..{
     InitCommand=function(self) self:rotationy(180) end,
   },
 
