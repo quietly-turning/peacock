@@ -38,61 +38,23 @@ af[#af+1] = Def.Quad{
 -- jaw droppin
 af[#af+1] = LoadActor("./peacock 2x2.png")..{
   InitCommand=function(self)
-    self:animate(false):setstate(0):Center()
-    local src_w = self:GetTexture():GetSourceWidth()
-    self:Center():zoom(_screen.w/WideScale(src_w*0.75,src_w))
-    texture = self:GetTexture()
-    self:GetParent():queuecommand("SetTexture")
-  end,
-  PopEyesCommand=function(self)
-      self:hibernate(math.huge)
-  end,
-}
+    self:animate(false):setstate(0)
 
--- eye poppin
-af[#af+1] = Def.Sprite{
-  SetTextureCommand=function(self)
-    self:SetTexture(texture)
-    self:animate(false):setstate(1):Center():visible(false)
-    local src_w = self:GetTexture():GetSourceWidth()
-    self:Center():zoom(_screen.w/WideScale(src_w*0.75,src_w))
-  end,
-  PopEyesCommand=function(self)
-    self:visible(true)
-  end,
-  TurnHeadCommand=function(self)
-    self:hibernate(math.huge)
-  end,
-}
-
--- head turnin
-af[#af+1] = Def.Sprite{
-  InitCommand=function(self)  end,
-  SetTextureCommand=function(self)
-    self:SetTexture(texture)
-    self:animate(false):setstate(3):Center():visible(false)
     local src_w = self:GetTexture():GetSourceWidth()
     self:zoom(_screen.w/WideScale(src_w*0.75,src_w))
-    self:align(1,1):xy(_screen.w, _screen.h)
+
+    self:align(0.5, 0.5):Center() -- center the texture
+  end,
+  PopEyesCommand=function(self)
+    self:setstate(1)
   end,
   TurnHeadCommand=function(self)
-    self:visible(true)
+    self:setstate(3)
+    self:align(1,1):xy(_screen.w, _screen.h) -- right-justify the texture
   end,
   ShockBodyCommand=function(self)
-    self:hibernate(math.huge)
-  end,
-}
-
--- body shockin
-af[#af+1] = Def.Sprite{
-  SetTextureCommand=function(self)
-    self:SetTexture(texture)
-    self:animate(false):setstate(2):Center():visible(false)
-    local src_w = self:GetTexture():GetSourceWidth()
-    self:Center():zoom(_screen.w/WideScale(src_w*0.75,src_w))
-  end,
-  ShockBodyCommand=function(self)
-    self:visible(true)
+    self:setstate(2)
+    self:align(0.5, 0.5):Center() -- center the texture
   end,
   BounceCommand=function(self)
     self:thump():effectclock('beat'):effectperiod(1)
