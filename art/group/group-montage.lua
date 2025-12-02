@@ -68,7 +68,7 @@ af[#af+1] = Def.Sprite{
 af[#af+1] = LoadActor("./montage-2 2x2.jpg")..{
   InitCommand=function(self)
     texture2 = self:GetTexture()
-    self:xy(_screen.cx, _screen.cy+140):animate(false):setstate(0)
+    self:xy(_screen.cx, _screen.cy):animate(false):setstate(0)
 
     self:zoomtoheight(_screen.h*1.5)
     self:zoomtowidth( texture_dimension * self:GetZoomedHeight()/texture_dimension )
