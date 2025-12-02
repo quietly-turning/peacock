@@ -1,7 +1,7 @@
 return {
    -- beat to appear   crossfade    path
    {   0.000,          false,       "dbk2/i-wanna-see-your-peacock.lua" },
-   {  20.000,          false,       "pung/cool.jpg" },
+   {  20.000,          false,       "paul/cool.jpg" },
    {  28.000,          true,        "doglover6262/Lucina.lua" },
    {  36.000,          true,        "dandelion21/dandelion.lua" },
    {  44.000,          true,        "Mey-Z Daisy/a turkey and a peacock in love.jpg" },
@@ -23,7 +23,7 @@ return {
    { 188.000,          true,        "yume-chan/TaroNuke-and-a-peacock-in-a-purikura-booth.lua" },
    { 196.000,          true,        "Chingching/peacock.lua"},
    { 204.000,          true,        "Forn/cross-stitch.jpg" },
-   { 212.000,          true,        "pung/hey-guys/hey-guys.lua" },
+   { 212.000,          true,        "paul/hey-guys/hey-guys.lua" },
    { 228.000,          true,        "dbk2/oot.mp4"},
    { 248.000,          true,        "dbk2/fight/fight.lua" },
    { 260.000,          true,        "group/group-montage.lua" },

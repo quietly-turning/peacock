@@ -50,7 +50,7 @@ af[#af+1] = Def.Sprite{
 
 
 
--- real bird, pung
+-- real bird, paul
 af[#af+1] = Def.Sprite{
   OnCommand=function(self)
     self:SetTexture(texture1)
