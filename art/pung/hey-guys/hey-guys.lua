@@ -55,7 +55,13 @@ af[#af+1] = LoadActor("./long-legged-fellow.png")..{
 af[#af+1] = Def.ActorFrame{
   Name="LLF-speech-bubble-AF",
   InitCommand=function(self) self:visible(false):zoom(0):xy(200,180) end,
-  DoneWalkingCommand=function(self) self:visible(true):sleep(0.3*musicrate):bounceend(0.3*musicrate):zoom(0.275) end,
+  DoneWalkingCommand=function(self)
+    self:visible(true)
+    self:sleep(0.3*musicrate)
+    self:bounceend(0.3*musicrate):zoom(0.3)
+    self:sleep(1*musicrate):zoom(0):sleep(1.5)
+    self:bounceend(0.3*musicrate):zoom(0.4)
+  end,
 
   LoadActor("./speech-bubbles 1x2.png")..{
     Name="LLF-speech-bubble",
@@ -70,7 +76,7 @@ af[#af+1] = Def.ActorFrame{
       self:sleep(0.6*musicrate):linear(text_reveal_duration):cropright(0):sleep(1.25*musicrate):queuecommand("NextText")
     end,
     NextTextCommand=function(self)
-      self:cropright(1):setstate(2):sleep(0.1*musicrate):linear(text_reveal_duration):cropright(0)
+      self:cropright(1):setstate(2):sleep(0.4*musicrate):linear(text_reveal_duration):cropright(0)
     end,
   }
 }
@@ -103,10 +109,10 @@ af[#af+1] = Def.ActorFrame{
   Def.ActorFrame{
     Name="cat-speech-bubble-AF",
     InitCommand=function(self)
-      self:visible(false):zoom(0.35):xy(_screen.w-220,_screen.h-135)
+      self:visible(false):zoom(0.4):xy(_screen.w-220,_screen.h-135)
     end,
     DoneWalkingCommand=function(self)
-      self:sleep(1.333*musicrate):queuecommand("Reveal")
+      self:sleep(1.75*musicrate):queuecommand("Reveal")
     end,
     RevealCommand=function(self) self:visible(true) end,
 
@@ -134,8 +140,8 @@ af[#af+1] = Def.ActorFrame{
 
 -- ceiling peacock
 af[#af+1] = Def.ActorFrame{
-  InitCommand=function(self) self:visible(false):rotationz(180):xy(_screen.cx+100, -300):zoom(0.25) end,
-  DoneWalkingCommand=function(self) self:visible(true):sleep(2.5*musicrate):decelerate(1*musicrate):y(100) end,
+  InitCommand=function(self) self:visible(false):rotationz(180):xy(_screen.cx+50, -300):zoom(0.25) end,
+  DoneWalkingCommand=function(self) self:visible(true):sleep(4*musicrate):decelerate(0.75*musicrate):y(100) end,
 
   LoadActor("../../yatsokan/peacock.png")..{
     InitCommand=function(self) self:rotationy(180) end,
