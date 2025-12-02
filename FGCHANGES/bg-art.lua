@@ -28,6 +28,5 @@ return {
    { 248.000,          true,        "dbk2/fight/fight.lua" },
    { 260.000,          true,        "group/group-montage.lua" },
    { 268.000,          true,        "mrbrownjeremy/Peacuckoo3.mp4" },
-   { 278.000,          true,        "placeholder.png"}  -- credits
-   -- { 278.000,       true,        "credits/credits.lua"
+   { 276.000,          true,        "dbk2/credits/credits.lua"}
 }
