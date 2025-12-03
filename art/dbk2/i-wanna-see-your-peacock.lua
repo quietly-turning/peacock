@@ -59,10 +59,11 @@ end
 -- --------------------------------------
 
 local af = Def.ActorFrame{
+  Name="WordArt-peacock",
   OnCommand=function(self)
     self:zoom(START_ZOOM):xy(START_X, START_Y)
     self:SetUpdateFunction( Update )
-  end
+  end,
 }
 
 -- --------------------------------------
@@ -75,7 +76,7 @@ local feathersAF = Def.ActorFrame{}
 for i=1,6 do
   feathersAF[#feathersAF+1] = Def.BitmapText{
     File=fontpath,
-    Text=i<4 and "\n\nPEACOCK\n\n\n" or "\n\n\nPEAKCOCK\n\n",
+    Text=i<4 and "\n\nPEACOCK\n\n\n" or "\n\n\nPEACOCK\n\n",
     InitCommand=function(self)
       self:align(0,0.5):diffuseleftedge({0, 0.2, 0.8, 1}):diffuserightedge({0,0.8,0.2,1})
       self:visible(false)
