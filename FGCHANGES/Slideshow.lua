@@ -1,5 +1,5 @@
 -- ------------------------------------------------------
--- Slideshow.lua: for when you REALLY want to ensure players to see the art :)
+-- Slideshow.lua: for when you REALLY want to ensure players see the bg art :)
 --
 -- author:         quietly-turning
 -- GitHub:         https://github.com/quietly-turning/peacock
@@ -94,9 +94,9 @@ args[#args+1] = Def.Actor({ InitCommand=function(self) self:sleep(999) end })
 
 for _, piece in ipairs(art_pieces) do
 
-   -- if the art is a lua file, pass it the WideScale function in case the Lua needs it
-   -- add the animation to the main ActorFrame here
-   -- and give it a common OnCommand + HideCommand
+   -- if the art is a lua file, pass it the WideScale function in case the Lua needs it,
+   -- add the animation to the main ActorFrame here,
+   -- and give the animation a common InitCommand, ShowCommand, and HideCommand
    if (piece[3]:match(".lua$")) then
       args[#args+1] = LoadActor("../art/"..piece[3], {WideScale})..{
          InitCommand=function(self)
@@ -107,7 +107,7 @@ for _, piece in ipairs(art_pieces) do
          HideCommand=function(self) self:hibernate(math.huge) end
       }
 
-   -- if the art is a [png, jpg, mp4, mov]
+   -- if the art is a [png, jpg, mp4, mov], add a Sprite to the main ActorFrame here
    else
       args[#args+1] = GenerateSprite(piece[3], actors)
    end
