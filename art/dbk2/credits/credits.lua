@@ -1,4 +1,4 @@
- -- 0: alex
+ -- 0: TacoRat
  -- 1: Axlemon
  -- 2: bogo
  -- 3: brandon
@@ -22,7 +22,7 @@
 local num_artists = 20
 
 -- table to store which artist-name each player is currently focused on
--- 0 is "alex", 19 is "yume-chan"
+-- 0 is TacoRat, 19 is YUME★CHAN
 local focus = { PlayerNumber_P1=0, PlayerNumber_P2=1 }
 
 -- number of columns in the grid of selectable artist-names

@@ -5,7 +5,7 @@ return {
    {  28.000,          true,        "doglover6262/Lucina.lua" },
    {  36.000,          true,        "dandelion21/dandelion.lua" },
    {  44.000,          true,        "Mey-Z Daisy/a turkey and a peacock in love.jpg" },
-   {  52.000,          false,       "alex/peacock.lua" },
+   {  52.000,          false,       "TacoRat/peacock.lua" },
    {  68.000,          true,        "catsudawn/peacock/peacock.lua"},
    {  84.000,          true,        "bogo/peacocklef-.lua" },
    {  92.000,          true,        "Silverwolfstar/peacock.lua" },
