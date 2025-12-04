@@ -59,7 +59,7 @@ af[#af+1] = Def.ActorFrame{
     self:visible(true)
     self:sleep(0.3*musicrate)
     self:bounceend(0.3*musicrate):zoom(0.3)
-    self:sleep(1*musicrate):zoom(0):sleep(1.5)
+    self:sleep(1*musicrate):zoom(0):sleep(1.5*musicrate)
     self:bounceend(0.3*musicrate):zoom(0.4)
   end,
 
