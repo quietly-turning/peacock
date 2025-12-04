@@ -119,7 +119,7 @@ local function InputHandler(event)
 end
 
 -- ------------------------------------------------------------------------
-
+local _, IsEditMode, GetPlayerAF = unpack(LoadActor("../../../FGCHANGES/helpers.lua"))
 local text_zoom = 0.3
 
 local af = Def.ActorFrame{}
@@ -133,7 +133,14 @@ af.ShowCommand=function(self)
   SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
 
   for player in ivalues(GAMESTATE:GetHumanPlayers()) do
-    GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):Dark(1,2, true):Stealth(1,2)
+    -- hide the receptor arrows with "Dark"
+    GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Song"):Dark(1,2)
+
+    -- hide the player combo by hiding the player ActorFrames
+    if not IsEditMode() then
+      local playerAF = GetPlayerAF(ToEnumShortString(player))
+      playerAF:hibernate(math.huge)
+    end
   end
 end
 
