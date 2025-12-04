@@ -14,8 +14,8 @@ local artists = {
   {"harper",         },
   {"Mey-Z Daisy",    },
   {"mrbrownjeremy",  },
-  {"paul",           },
-  {"silverwolfstar", },
+  {"Paul",           },
+  {"Silverwolfstar", },
   {"teejusb",        },
   {"yatsokan",       },
   {"yume-chan",      }
