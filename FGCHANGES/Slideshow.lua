@@ -36,16 +36,31 @@ local function Update(af, dt)
    if  (cur_actor <= #actors)                                -- are there still slides remaining, or have we reached the end of the slideshow?
    and (GAMESTATE:GetSongBeat() > art_pieces[cur_actor][1])  -- if the current beat (like 27.425) is greater than the beat specified in the art_pieces table for the next slide
    then
-      -- fade in current art
-      actors[cur_actor]:visible(true):smooth(art_pieces[cur_actor][2] and xfade or 0):diffusealpha(1)
+      local new_art = actors[cur_actor]
+      local old_art = actors[cur_actor-1]
+
+      -- fade in new art
+      new_art:visible(true)
+
+      -- wait a little longer than normal before fading in the credits sequence
+      if cur_actor==#art_pieces-1 then
+         new_art:sleep(0.5):smooth(xfade):diffusealpha(1)
+
+      -- normal crossfade between art pieces
+      else
+         new_art:smooth(art_pieces[cur_actor][2] and xfade or 0):diffusealpha(1)
+      end
 
       -- if current art is a lua file, start it
-      if art_pieces[cur_actor][3]:match(".lua$") then actors[cur_actor]:playcommand("Show") end
+      if art_pieces[cur_actor][3]:match(".lua$") then new_art:playcommand("Show") end
       -- if current art is a video, play it now
-      if art_pieces[cur_actor][3]:match(".mp4$") or art_pieces[cur_actor][3]:match(".mov$") then actors[cur_actor]:animate(true) end
+      if art_pieces[cur_actor][3]:match(".mp4$") or art_pieces[cur_actor][3]:match(".mov$") then new_art:animate(true) end
 
-      -- fade out prev art
-      if (cur_actor-1 > 0) then actors[cur_actor-1]:sleep(xfade):queuecommand("Hide") end
+      -- don't try to fade out art that doesn't exist
+      if (cur_actor-1 > 0) then
+         -- fade out prev art
+         old_art:sleep(cur_actor==29 and (xfade*4) or xfade ):queuecommand("Hide")
+      end
 
       -- increment index
       cur_actor = cur_actor + 1

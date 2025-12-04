@@ -34,6 +34,9 @@ local row_height = 30
 -- lookup table for convenience
 local OtherPlayer = { PlayerNumber_P1="PlayerNumber_P2", PlayerNumber_P2="PlayerNumber_P1" }
 
+local bpm = GAMESTATE:GetCurrentSong():GetDisplayBpms()[1]
+local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+
 ---------------------------------
 -- variables that need file-scope for convenience
 
@@ -144,18 +147,26 @@ af.ShowCommand=function(self)
   end
 end
 
+-- simple bg
+af[#af+1] = Def.Quad{
+  InitCommand=function(self) self:Center():FullScreen():diffuse(0,0,0,0) end,
+  ShowCommand=function(self) self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1) end
+}
+
 af[#af+1] = LoadActor("./thanks.png")..{
   InitCommand=function(self)
-    self:valign(0):xy(_screen.cx, -10):zoom(0.5)
-  end
+    self:valign(0):xy(_screen.cx, -10):zoom(0.5):diffusealpha(0)
+  end,
+  ShowCommand=function(self) self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1) end
 }
 
 local af2 = Def.ActorFrame{}
 af2.Name="ArtistsAF"
 af2.InitCommand=function(self)
   af2_ref = self
-  self:xy(_screen.w*0.25, _screen.h*0.25)
+  self:xy(_screen.w*0.25, _screen.h*0.25):diffusealpha(0)
 end
+af2.ShowCommand=function(self) self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1) end
 
 af2[#af2+1] = Def.Sprite{
   Name="P1Cursor",
@@ -225,9 +236,13 @@ af[#af+1] = LoadActor("./credits-P1 4x5.jpg")..{
   InitCommand=function(self)
     self:animate(0)
     self:valign(1):xy(_screen.cx-120, _screen.h-10):zoom(0.375)
+    self:diffusealpha(0)
   end,
   OnCommand=function(self)
     self:setstate(focus.PlayerNumber_P1)
+  end,
+  ShowCommand=function(self)
+    self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1)
   end,
   SetCommand=function(self)
     self:setstate(focus.PlayerNumber_P1)
@@ -240,9 +255,13 @@ af[#af+1] = LoadActor("./credits-P2 4x5.jpg")..{
   InitCommand=function(self)
     self:animate(0)
     self:valign(1):xy(_screen.cx+120, _screen.h-10):zoom(0.375)
+    self:diffusealpha(0)
   end,
   OnCommand=function(self)
     self:setstate(focus.PlayerNumber_P2)
+  end,
+  ShowCommand=function(self)
+    self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1)
   end,
   SetCommand=function(self)
     self:setstate(focus.PlayerNumber_P2)
