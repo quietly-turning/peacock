@@ -1,25 +1,25 @@
-local artists = {
-  {"alex",           },
-  {"Axlemon",        },
-  {"bogo",           },
-  {"brandon",        },
-  {"catsudawn",      },
-  {"Chingching",     },
-  {"coconutbowling", },
-  {"dandelion21",    },
-  {"dbk2",           },
-  {"doglover6262",   },
-  {"Draner",         },
-  {"Forn",           },
-  {"harper",         },
-  {"Mey-Z Daisy",    },
-  {"mrbrownjeremy",  },
-  {"Paul",           },
-  {"Silverwolfstar", },
-  {"teejusb",        },
-  {"yatsokan",       },
-  {"yume-chan",      }
-}
+ -- 0: alex
+ -- 1: Axlemon
+ -- 2: bogo
+ -- 3: brandon
+ -- 4: catsudawn
+ -- 5: Chingching
+ -- 6: coconutbowli
+ -- 7: dandelion21
+ -- 8: dbk2
+ -- 9: doglover6262
+ --10: Draner
+ --11: Forn
+ --12: harper
+ --13: Mey-Z Daisy
+ --14: mrbrownjeremy
+ --15: Paul
+ --16: Silverwolfst
+ --17: teejusb
+ --18: yatsokan
+ --19: YUME★CHAN
+
+local num_artists = 20
 
 -- table to store which artist-name each player is currently focused on
 -- 0 is "alex", 19 is "yume-chan"
@@ -72,24 +72,24 @@ local InputActions = {
    -- decrement by 1, wrap to end if needed
    Left = function(pn)
       focus[pn] = focus[pn] - 1
-      if (focus[pn] < 0) then focus[pn]=#artists-1 end
+      if (focus[pn] < 0) then focus[pn]=num_artists-1 end
    end,
 
    -- increment by 1, wrap to start if needed
    Right = function(pn)
       focus[pn] = focus[pn] + 1
-      if (focus[pn]>#artists-1) then focus[pn]=0 end
+      if (focus[pn]>num_artists-1) then focus[pn]=0 end
    end,
 
    -- decrement by num_cols, wrap-and-maintain-column if needed
    Up = function(pn)
       focus[pn] = focus[pn] - num_cols
       if (focus[pn] < 0) then
-         if (focus[pn]%num_cols > (#artists-1)%num_cols) then
-            focus[pn] = math.floor((#artists-1)/num_cols)*num_cols + focus[pn]
+         if (focus[pn]%num_cols > (num_artists-1)%num_cols) then
+            focus[pn] = math.floor((num_artists-1)/num_cols)*num_cols + focus[pn]
          else
-            focus[pn] = math.ceil((#artists-1)/num_cols)*num_cols + focus[pn]
-            if (focus[pn]>(#artists-1)) then focus[pn]=math.floor((#artists-1)/num_cols)*num_cols end
+            focus[pn] = math.ceil((num_artists-1)/num_cols)*num_cols + focus[pn]
+            if (focus[pn]>(num_artists-1)) then focus[pn]=math.floor((num_artists-1)/num_cols)*num_cols end
          end
       end
    end,
@@ -97,7 +97,7 @@ local InputActions = {
    -- increment by num_cols, wrap-and-maintain-column if needed
    Down = function(pn)
       focus[pn] = focus[pn] + num_cols
-      if (focus[pn]>(#artists-1)) then
+      if (focus[pn]>(num_artists-1)) then
          focus[pn] = focus[pn]%num_cols
          if (focus[pn] < 0) then focus[pn]=num_cols end
       end
@@ -201,7 +201,7 @@ af2[#af2+1] = LoadActor("./artists 2x11")..{
 }
 
 -- all other artists added in for-loop, re-using the already-loaded texture from 1st artist
-for i=1, #artists-1 do
+for i=1, num_artists-1 do
   af2[#af2+1] = Def.Sprite{
     Name=("Artist%d"):format(i),
     InitCommand=function(self)
