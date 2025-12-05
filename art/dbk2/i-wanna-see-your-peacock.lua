@@ -8,11 +8,6 @@ local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 
 local fontpath = GAMESTATE:GetCurrentSong():GetSongDir().."art/dbk2/Arial Black/Arial Black 128px.ini"
 
-local zoom_out_applied = false
-local rotation_applied = false
-local fadeout_applied  = false
-local feathers_tweened = false
-
 local START_ZOOM = WideScale(0.425, 0.585)
 local START_X    = 30
 local START_Y    = 460
@@ -32,6 +27,13 @@ local text = {
   { 11.500, "I  WANNA\nSEE YOUR\nPEACOCK-COCK-COCK YOUR PEACOCK-COCK\nPEACOCK-COCK-COCK YOUR PEACOCK-COCK\nI WANNA\nSEE YOUR"},
 }
 
+local action_index = 1
+local actions ={
+  {11, "ZoomOut"},
+  {15, "Rotate"},
+  {16, "RevealFeathers"}
+}
+
 local function Update(af, dt)
   if cur_index <= #text and GAMESTATE:GetSongBeat() > text[cur_index][1] then
     -- update text
@@ -40,19 +42,9 @@ local function Update(af, dt)
     cur_index = cur_index + 1
   end
 
-  if zoom_out_applied==false and GAMESTATE:GetSongBeat() > 11 then
-    af:finishtweening():smooth(((60/bpm)*3)*musicrate):zoom( WideScale(0.2, 0.255) ):y(240)
-    zoom_out_applied = true
-  end
-
-  if rotation_applied==false and GAMESTATE:GetSongBeat() > 15 then
-    af:finishtweening():smooth(((60/bpm)*2)*musicrate):zoom(WideScale( 0.085,0.09) ):rotationz(-90):xy(_screen.cx, _screen.h-20)
-    rotation_applied = true
-  end
-
-  if feathers_tweened==false and GAMESTATE:GetSongBeat() > 16 then
-    af:playcommand('RevealFeathers')
-    feathers_tweened = true
+  if action_index <= #actions and GAMESTATE:GetSongBeat() > actions[action_index][1] then
+    af:playcommand(actions[action_index][2])
+    action_index = action_index + 1
   end
 end
 
@@ -63,6 +55,12 @@ local af = Def.ActorFrame{
   OnCommand=function(self)
     self:zoom(START_ZOOM):xy(START_X, START_Y)
     self:SetUpdateFunction( Update )
+  end,
+  ZoomOutCommand=function(self)
+    self:finishtweening():smooth(((60/bpm)*3)*musicrate):zoom( WideScale(0.2, 0.255) ):y(240)
+  end,
+  RotateCommand=function(self)
+    self:finishtweening():smooth(((60/bpm)*2)*musicrate):zoom(WideScale( 0.085, 0.09) ):rotationz(-90):xy(_screen.cx, _screen.h-20)
   end,
 }
 
