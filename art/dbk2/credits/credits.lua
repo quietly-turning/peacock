@@ -14,7 +14,7 @@
  --13: Mey-Z Daisy
  --14: mrbrownjeremy
  --15: Paul
- --16: Silverwolfst
+ --16: Silverwolfstar
  --17: teejusb
  --18: yatsokan
  --19: YUME★CHAN
@@ -24,6 +24,12 @@ local num_artists = 20
 -- table to store which artist-name each player is currently focused on
 -- 0 is TacoRat, 19 is YUME★CHAN
 local focus = { PlayerNumber_P1=0, PlayerNumber_P2=1 }
+
+local playercolor = {
+  --                 r    g    b    a
+  PlayerNumber_P1={0.4, 0.4, 1.0, 1.0},
+  PlayerNumber_P2={0.5, 1.0, 0.5, 0.9}
+}
 
 -- number of columns in the grid of selectable artist-names
 local num_cols   = 3
@@ -43,6 +49,7 @@ local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 -- `artistNames_texture` will get loaded-from-disk via LoadActor() once,
 -- then used by other Def.Sprite actors via SetTexture() (i.e. from memory)
 local artistNames_texture
+
 -- references to the 2 actorframes that the InputHandler has access to
 local af_ref, af2_ref
 ---------------------------------
@@ -67,7 +74,10 @@ local function UpdateGridFocus(pn)
   -- -------------------------------------------------------
   -- update small-scale art sprite for player with input event
   local artSprite = ("%sArt"):format(ToEnumShortString(pn))
-  af_ref:GetChild(artSprite):playcommand("Set")
+  af_ref:GetChild("SelectedArtists"):GetChild(artSprite):playcommand("Set")
+  -- update label for small-scale art sprite
+  local focusLabel = ("%sFocusArtistName"):format(ToEnumShortString(pn))
+  af_ref:GetChild("SelectedArtists"):GetChild(focusLabel):playcommand("Set")
 end
 
 
@@ -153,28 +163,78 @@ af[#af+1] = Def.Quad{
   ShowCommand=function(self) self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1) end
 }
 
+local af3 = Def.ActorFrame{}
+af3.Name="SelectedArtists"
+af3.InitCommand=function(self) self:diffusealpha(0) end
+af3.ShowCommand=function(self)
+  self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1)
+end
+
+for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+  local pn = ToEnumShortString(player)
+
+  -- sprite showing small-scale art by selected artist
+  af3[#af3+1] = LoadActor(("./credits-%s 4x5.jpg"):format(pn))..{
+    Name=("%sArt"):format(pn),
+    InitCommand=function(self)
+      self:animate(0)
+      self:valign(0):xy(_screen.cx + (120 * (player==PLAYER_1 and -1 or 1)), 15):zoom(0.375)
+    end,
+    OnCommand=function(self)
+      self:setstate(focus[player])
+    end,
+    SetCommand=function(self)
+      self:setstate(focus[player])
+    end
+  }
+
+  -- artist name label
+  af3[#af3+1] = Def.Sprite{
+    Name=("%sFocusArtistName"):format(pn),
+    InitCommand=function(self)
+      self:zoom(text_zoom)
+      self:animate(false)
+      self:xy(_screen.cx + (120 * (player==PLAYER_1 and -1 or 1)), 185)
+      self:diffuse(playercolor[player])
+    end,
+    OnCommand=function(self)
+      self:SetTexture(artistNames_texture):setstate(focus.PlayerNumber_P1)
+    end,
+    SetCommand=function(self)
+      self:setstate(focus.PlayerNumber_P1)
+    end,
+  }
+end
+
+af[#af+1] = af3
+
+-- "thanks to these artists"
 af[#af+1] = LoadActor("./thanks.png")..{
   InitCommand=function(self)
-    self:valign(0):xy(_screen.cx, -10):zoom(0.5):diffusealpha(0)
+    self:valign(0):xy(_screen.cx, 190):zoom(0.45):diffusealpha(0)
   end,
   ShowCommand=function(self) self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1) end
 }
+
+-- ------------------------------------------------------------------------
+-- grid of artist names
 
 local af2 = Def.ActorFrame{}
 af2.Name="ArtistsAF"
 af2.InitCommand=function(self)
   af2_ref = self
-  self:xy(_screen.w*0.25, _screen.h*0.25):diffusealpha(0)
+  self:xy(_screen.w*0.25, 300):diffusealpha(0):zoom(0.9)
 end
 af2.ShowCommand=function(self) self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1) end
 
+-- P1 cursor
 af2[#af2+1] = Def.Sprite{
   Name="P1Cursor",
   Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
   OnCommand=function(self)
     self:SetTexture(artistNames_texture):animate(false):setstate(20)
     self:zoomx(text_zoom * 1.25):zoomy(text_zoom * 1.05)
-    self:diffuse(0.4,0.4,1,1)
+    self:diffuse(playercolor.PlayerNumber_P1)
   end,
   ChangeFocusCommand=function(self)
     local p1_focus = self:GetParent():GetChild(("Artist%d"):format(focus.PlayerNumber_P1))
@@ -182,13 +242,14 @@ af2[#af2+1] = Def.Sprite{
   end
 }
 
+-- P2 cursor
 af2[#af2+1] = Def.Sprite{
   Name="P2Cursor",
   Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
   OnCommand=function(self)
     self:SetTexture(artistNames_texture):animate(false):setstate(21)
     self:zoomx(text_zoom * 1.25):zoomy(text_zoom * 1.05)
-    self:diffuse(0.5,1,0.5,0.9)
+    self:diffuse(playercolor.PlayerNumber_P2)
   end,
   ChangeFocusCommand=function(self)
     local p2_focus = self:GetParent():GetChild(("Artist%d"):format(focus.PlayerNumber_P2))
@@ -230,42 +291,7 @@ end
 
 af[#af+1] = af2
 
-af[#af+1] = LoadActor("./credits-P1 4x5.jpg")..{
-  Name="P1Art",
-  Condition=GAMESTATE:IsHumanPlayer(PLAYER_1),
-  InitCommand=function(self)
-    self:animate(0)
-    self:valign(1):xy(_screen.cx-120, _screen.h-10):zoom(0.375)
-    self:diffusealpha(0)
-  end,
-  OnCommand=function(self)
-    self:setstate(focus.PlayerNumber_P1)
-  end,
-  ShowCommand=function(self)
-    self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1)
-  end,
-  SetCommand=function(self)
-    self:setstate(focus.PlayerNumber_P1)
-  end
-}
+-- ------------------------------------------------------------------------
 
-af[#af+1] = LoadActor("./credits-P2 4x5.jpg")..{
-  Name="P2Art",
-  Condition=GAMESTATE:IsHumanPlayer(PLAYER_2),
-  InitCommand=function(self)
-    self:animate(0)
-    self:valign(1):xy(_screen.cx+120, _screen.h-10):zoom(0.375)
-    self:diffusealpha(0)
-  end,
-  OnCommand=function(self)
-    self:setstate(focus.PlayerNumber_P2)
-  end,
-  ShowCommand=function(self)
-    self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1)
-  end,
-  SetCommand=function(self)
-    self:setstate(focus.PlayerNumber_P2)
-  end
-}
 
 return af
