@@ -2,6 +2,8 @@ local bpm = GAMESTATE:GetCurrentSong():GetDisplayBpms()[1]
 local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 local beat_duration = (60/bpm) * musicrate
 
+local widthScaler = (_screen.w/854) -- accommodate themes with a DisplayWidth larger than 854
+
 local actions_index = 1
 local actions = {
   {54, "PopEyes"},

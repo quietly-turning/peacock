@@ -7,10 +7,11 @@ local bpm = 140
 local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 
 local fontpath = GAMESTATE:GetCurrentSong():GetSongDir().."art/dbk2/Arial Black/Arial Black 128px.ini"
+local widthScaler = (_screen.w/854) -- accommodate themes with a DisplayWidth larger than 854
 
-local START_ZOOM = WideScale(0.425, 0.585)
-local START_X    = 30
-local START_Y    = 460
+local START_ZOOM = WideScale(0.425, 0.585) * widthScaler
+local START_X    = 30  * widthScaler
+local START_Y    = 460 * widthScaler
 
 local text = {
   { 1.500, "I       \n        \n       \n\n\n"},
@@ -57,10 +58,10 @@ local af = Def.ActorFrame{
     self:SetUpdateFunction( Update )
   end,
   ZoomOutCommand=function(self)
-    self:finishtweening():smooth(((60/bpm)*3)*musicrate):zoom( WideScale(0.2, 0.255) ):y(240)
+    self:finishtweening():smooth(((60/bpm)*3)*musicrate):zoom( WideScale(0.2, 0.255) * widthScaler ):y(240*widthScaler)
   end,
   RotateCommand=function(self)
-    self:finishtweening():smooth(((60/bpm)*2)*musicrate):zoom(WideScale( 0.085, 0.09) ):rotationz(-90):xy(_screen.cx, _screen.h-20)
+    self:finishtweening():smooth(((60/bpm)*2)*musicrate):zoom(WideScale( 0.085, 0.09) * widthScaler ):rotationz(-90):xy(_screen.cx, _screen.h-20)
   end,
 }
 

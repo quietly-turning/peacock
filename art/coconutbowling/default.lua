@@ -9,6 +9,7 @@ local battleLagTime = 0.2
 local pauseTime = battleDelayTime + battleWindTime + battleAttackTime + battleLagTime
 local flyTime = 0.2
 
+local widthScaler = (_screen.w/854) -- accommodate themes with a DisplayWidth larger than 854
 ----------------------------------------------------------------------------
 
 local actor = Def.ActorFrame{
@@ -21,7 +22,7 @@ local actor = Def.ActorFrame{
 
 actor[#actor+1] = LoadActor("./peacock face left.png")..{
 	AnimateCommand=function(self)
-		self:zoom(zoomVal):visible(1):CenterY():x(_screen.w*1.1)
+		self:zoom(zoomVal * widthScaler):visible(1):CenterY():x(_screen.w*1.1)
 		self:sleep(beginTime):linear(enterTime):x(_screen.w*0.6)
 		self:sleep(battleDelayTime):decelerate(battleWindTime):x(_screen.w*0.62):addrotationz(-30):decelerate(battleAttackTime):x(_screen.w*0.54):addrotationz(30)
 		self:sleep(battleLagTime):linear(.2):x(_screen.w*1.1):y(_screen.h*0.35):addrotationz(-60)
@@ -29,7 +30,7 @@ actor[#actor+1] = LoadActor("./peacock face left.png")..{
 }
 actor[#actor+1] = LoadActor("./peacock face right.png")..{
 	AnimateCommand=function(self)
-		self:zoom(zoomVal):visible(1):CenterY():x(-_screen.w*.1)
+		self:zoom(zoomVal * widthScaler):visible(1):CenterY():x(-_screen.w*.1)
 		self:sleep(beginTime):linear(enterTime):x(_screen.w*0.4)
 		self:sleep(battleDelayTime):decelerate(battleWindTime):x(_screen.w*0.38):addrotationz(30):decelerate(battleAttackTime):x(_screen.w*0.46):addrotationz(-30)
 		self:sleep(battleLagTime):linear(flyTime):x(-_screen.w*.1):y(_screen.h*0.35):addrotationz(60)
@@ -37,28 +38,28 @@ actor[#actor+1] = LoadActor("./peacock face right.png")..{
 }
 actor[#actor+1] = LoadActor("./lvl 1.png")..{
 	AnimateCommand=function(self)
-		self:zoom(zoomVal):visible(1):y(_screen.h*0.4):x(_screen.w*1.1)
+		self:zoom(zoomVal * widthScaler):visible(1):y(_screen.h*0.4):x(_screen.w*1.1)
 		self:sleep(beginTime):linear(enterTime):x(_screen.w*0.63)
 		self:sleep(pauseTime):linear(flyTime):x(_screen.w*1.1):y(_screen.h*0.25)
 	end
 }
 actor[#actor+1] = LoadActor("./lvl 1.png")..{
     AnimateCommand=function(self)
-		self:zoom(zoomVal):visible(1):y(_screen.h*0.4):x(-_screen.w*.1)
+		self:zoom(zoomVal * widthScaler):visible(1):y(_screen.h*0.4):x(-_screen.w*.1)
 		self:sleep(beginTime):linear(enterTime):x(_screen.w*0.37)
 		self:sleep(pauseTime):linear(flyTime):x(-_screen.w*.1):y(_screen.h*0.25)
 	end
 }
 actor[#actor+1] = LoadActor("./stats.png")..{
 	AnimateCommand=function(self)
-		self:zoom(zoomVal):visible(1):y(_screen.h*0.6):x(_screen.w*1.1)
+		self:zoom(zoomVal * widthScaler):visible(1):y(_screen.h*0.6):x(_screen.w*1.1)
 		self:sleep(beginTime):linear(enterTime):x(_screen.w*0.63)
 		self:sleep(pauseTime):linear(flyTime):x(_screen.w*1.1):y(_screen.h*0.45)
 	end
 }
 actor[#actor+1] = LoadActor("./stats.png")..{
 	AnimateCommand=function(self)
-		self:zoom(zoomVal):visible(1):y(_screen.h*0.6):x(-_screen.w*.1)
+		self:zoom(zoomVal * widthScaler):visible(1):y(_screen.h*0.6):x(-_screen.w*.1)
 		self:sleep(beginTime):linear(enterTime):x(_screen.w*0.4)
 		self:sleep(pauseTime):linear(flyTime):x(-_screen.w*.1):y(_screen.h*0.45)
 	end

@@ -52,6 +52,9 @@ local artistNames_texture
 
 -- references to the 2 actorframes that the InputHandler has access to
 local af_ref, af2_ref
+
+-- accommodate themes with a DisplayWidth larger than 854
+local widthScaler = (_screen.w/854)
 ---------------------------------
 
 local function UpdateGridFocus(pn)
@@ -163,9 +166,11 @@ af[#af+1] = Def.Quad{
   ShowCommand=function(self) self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1) end
 }
 
+-- ------------------------------------------------------------------------
+
 local af3 = Def.ActorFrame{}
 af3.Name="SelectedArtists"
-af3.InitCommand=function(self) self:diffusealpha(0):x(_screen.cx) end
+af3.InitCommand=function(self) self:diffusealpha(0):x(_screen.cx):zoom(widthScaler) end
 af3.ShowCommand=function(self)
   self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1)
 end
@@ -213,7 +218,7 @@ af[#af+1] = af3
 
 af[#af+1] = LoadActor("./thanks.png")..{
   InitCommand=function(self)
-    self:valign(0):xy(_screen.cx, 190):zoom(0.45):diffusealpha(0)
+    self:valign(0):xy(_screen.cx, 190*widthScaler):zoom(0.45 * widthScaler):diffusealpha(0)
   end,
   ShowCommand=function(self) self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1) end
 }
@@ -225,7 +230,9 @@ local af2 = Def.ActorFrame{}
 af2.Name="ArtistsAF"
 af2.InitCommand=function(self)
   af2_ref = self
-  self:zoom(0.9):xy(_screen.w*0.5 - (col_width * self:GetZoom()), 300):diffusealpha(0)
+  self:zoom(0.9*widthScaler)
+  self:xy((_screen.w*0.5) - (col_width * self:GetZoom()), 300*widthScaler)
+  self:diffusealpha(0)
 end
 af2.ShowCommand=function(self) self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1) end
 
