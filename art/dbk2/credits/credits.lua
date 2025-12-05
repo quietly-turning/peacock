@@ -165,7 +165,7 @@ af[#af+1] = Def.Quad{
 
 local af3 = Def.ActorFrame{}
 af3.Name="SelectedArtists"
-af3.InitCommand=function(self) self:diffusealpha(0) end
+af3.InitCommand=function(self) self:diffusealpha(0):x(_screen.cx) end
 af3.ShowCommand=function(self)
   self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1)
 end
@@ -178,7 +178,7 @@ for player in ivalues(GAMESTATE:GetHumanPlayers()) do
     Name=("%sArt"):format(pn),
     InitCommand=function(self)
       self:animate(0)
-      self:valign(0):xy(_screen.cx + (120 * (player==PLAYER_1 and -1 or 1)), 15):zoom(0.375)
+      self:valign(0):xy(120 * (player==PLAYER_1 and -1 or 1), 15):zoom(0.375)
     end,
     OnCommand=function(self)
       self:setstate(focus[player])
@@ -194,7 +194,7 @@ for player in ivalues(GAMESTATE:GetHumanPlayers()) do
     InitCommand=function(self)
       self:zoom(text_zoom)
       self:animate(false)
-      self:xy(_screen.cx + (120 * (player==PLAYER_1 and -1 or 1)), 185)
+      self:xy(120 * (player==PLAYER_1 and -1 or 1), 185)
       self:diffuse(playercolor[player])
     end,
     OnCommand=function(self)
@@ -208,7 +208,9 @@ end
 
 af[#af+1] = af3
 
+-- ------------------------------------------------------------------------
 -- "thanks to these artists"
+
 af[#af+1] = LoadActor("./thanks.png")..{
   InitCommand=function(self)
     self:valign(0):xy(_screen.cx, 190):zoom(0.45):diffusealpha(0)
@@ -223,7 +225,7 @@ local af2 = Def.ActorFrame{}
 af2.Name="ArtistsAF"
 af2.InitCommand=function(self)
   af2_ref = self
-  self:xy(_screen.w*0.25, 300):diffusealpha(0):zoom(0.9)
+  self:zoom(0.9):xy(_screen.w*0.5 - (col_width * self:GetZoom()), 300):diffusealpha(0)
 end
 af2.ShowCommand=function(self) self:accelerate(((60/bpm)*2)*musicrate):diffusealpha(1) end
 
