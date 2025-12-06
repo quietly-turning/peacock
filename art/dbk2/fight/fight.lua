@@ -1,6 +1,7 @@
 local WideScale = unpack(...)
 local base_path = GAMESTATE:GetCurrentSong():GetSongDir()
 local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+local widthScaler = (_screen.w/854) -- accommodate themes with a DisplayWidth larger than 854
 
 local actions = {
   {253.735, "Flash"},
@@ -37,7 +38,7 @@ af[#af+1] = Def.Quad{
 -- -------------------------------------------------
 -- fighter portraits
 
-local w = 400
+local w = 400*widthScaler
 local c = {1,1,1,1}
 local fighter_zoom = 0.9
 
@@ -68,10 +69,10 @@ af[#af+1] = Def.ActorMultiVertex{
     self:SetDrawState({Mode="DrawMode_Triangles"})
     self:SetVertices({
       {{_screen.w,   _screen.h-w, 0}, c, {1,0}},
-      {{_screen.w,   _screen.h, 0}, c, {1,1}},
-      {{_screen.w-w, _screen.h, 0}, c, {0,1}}
+      {{_screen.w,   _screen.h,   0}, c, {1,1}},
+      {{_screen.w-w, _screen.h,   0}, c, {0,1}}
     })
-    self:x(w * 1/fighter_zoom):zoom(fighter_zoom)
+    self:x(w * (1/fighter_zoom)):zoom(fighter_zoom)
     self:y((_screen.h * (1/fighter_zoom)) - _screen.h)
   end,
   ShowCommand=function(self)
@@ -87,7 +88,7 @@ af[#af+1] = LoadActor("./barbs 1x2.png")..{
   Name="Peacock-taunt",
   InitCommand=function(self)
     self:animate(false):setstate(0)
-    self:align(0,0):xy(80, 130):zoom(0.5)
+    self:align(0,0):xy(80, 150*widthScaler):zoom(0.5*widthScaler)
     self:cropright(1)
   end,
   ShowCommand=function(self)
@@ -99,7 +100,7 @@ af[#af+1] = LoadActor("./barbs 1x2.png")..{
 -- container for there-con-be-only-one and ghost-sprite
 local af2 = Def.ActorFrame{
   InitCommand=function(self)
-    self:xy(_screen.w-300, _screen.h-130)
+    self:xy(_screen.w-300*widthScaler, _screen.h-130*widthScaler)
   end
 }
 
@@ -111,7 +112,10 @@ af2[#af2+1] = Def.Sprite{
     self:zoom(0)
   end,
   ShowCommand=function(self)
-    self:sleep(2*musicrate):accelerate(0.15*musicrate):zoom(1):smooth(0.15*musicrate):rotationz(2):accelerate(0.15*musicrate):rotationz(0):zoom(0.5)
+    self:sleep(2*musicrate)
+    self:accelerate(0.15*musicrate):zoom(1*widthScaler)
+    self:smooth(0.15*musicrate):rotationz(2)
+    self:accelerate(0.15*musicrate):rotationz(0):zoom(0.5*widthScaler)
   end,
 }
 -- ghost "there can be only one"
@@ -120,11 +124,11 @@ af2[#af2+1] = Def.Sprite{
   OnCommand=function(self)
     self:SetTexture( self:GetParent():GetParent():GetChild("Peacock-taunt"):GetTexture() )
     self:animate(false):setstate(1)
-    self:zoom(0.5)
+    self:zoom(0.5 * widthScaler)
     self:diffusealpha(0)
   end,
   FlashCommand=function(self)
-    self:diffusealpha(0.5):decelerate(1*musicrate):zoom(0.65):diffusealpha(0)
+    self:diffusealpha(0.5):decelerate(1*musicrate):zoom(0.65 * widthScaler):diffusealpha(0)
   end
 }
 
@@ -136,14 +140,14 @@ af[#af+1] = LoadActor("./fight.png")..{
     self:Center():zoom(0)
   end,
   ShowFightTextCommand=function(self)
-    self:accelerate(0.2*musicrate):zoom(WideScale(0.5,0.75))
+    self:accelerate(0.2*musicrate):zoom(WideScale(0.5,0.75) * widthScaler)
   end
 }
 
 -- the rumor come out
 af[#af+1] = LoadActor("peacocks-and-melons.png")..{
   InitCommand=function(self)
-    self:xy(-300,_screen.cy):zoom(0.6)
+    self:xy(-300,_screen.cy):zoom(0.6*widthScaler)
   end,
   WhyNotBothCommand=function(self)
     self:smooth(0.8*musicrate):rotationz(720):x(_screen.w+300)

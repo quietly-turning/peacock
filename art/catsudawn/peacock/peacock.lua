@@ -2,6 +2,8 @@ local WideScale = unpack(...)
 local bpm = GAMESTATE:GetCurrentSong():GetDisplayBpms()[1]
 local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 
+local widthScaler = (_screen.w/854) -- accommodate themes with a DisplayWidth larger than 854
+
 local af = Def.ActorFrame{}
 local texture
 local frame_dimension = 512
@@ -69,7 +71,7 @@ af[#af+1] = Def.ActorFrame{
 
       self:animate(false):setstate(7):Center():SetTextureFiltering(true)
       self:zoomtoheight(_screen.h)
-      self:zoomtowidth( frame_dimension * self:GetZoomedHeight()/frame_dimension )
+      self:zoomtowidth( (frame_dimension * self:GetZoomedHeight()/frame_dimension) * widthScaler )
     end,
     ShowCommand=function(self)
       self:pulse()
@@ -86,7 +88,7 @@ af[#af+1] = LoadActor("./peacock.png")..{
   end,
   ShowCommand=function(self)
     local src_w = self:GetTexture():GetSourceWidth()
-    self:smooth(0.4):zoom(0.375):queuecommand("Filter")
+    self:smooth(0.4):zoom(0.375 * widthScaler):queuecommand("Filter")
   end,
   FilterCommand=function(self)
     self:SetTextureFiltering(true)
