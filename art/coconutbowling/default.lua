@@ -1,11 +1,12 @@
+local musicrate = 1/GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 
 local zoomVal = 0.45
-local beginTime = 0.25
-local enterTime = 0.5
-local battleDelayTime = 0.7
-local battleWindTime = 0.1
-local battleAttackTime = 0.3
-local battleLagTime = 0.2
+local beginTime = 0.25 * musicrate
+local enterTime = 0.5 * musicrate
+local battleDelayTime = 0.7 * musicrate
+local battleWindTime = 0.1 * musicrate
+local battleAttackTime = 0.3 * musicrate
+local battleLagTime = 0.2 * musicrate
 local pauseTime = battleDelayTime + battleWindTime + battleAttackTime + battleLagTime
 local flyTime = 0.2
 
