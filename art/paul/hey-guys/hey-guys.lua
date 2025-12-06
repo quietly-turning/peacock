@@ -1,4 +1,6 @@
 local WideScale = unpack(...)
+local widthScaler = (_screen.w/854) -- accommodate themes with a DisplayWidth larger than 854
+
 local af = Def.ActorFrame{}
 
 local walking = true
@@ -20,7 +22,7 @@ af[#af+1] = LoadActor("grass.png")..{
     local txt_h   = texture:GetTextureHeight()
 
     self:valign(1):xy(_screen.cx,_screen.h + 40):zoomtowidth(_screen.w)
-    self:texcoordvelocity(WideScale(0.325, 0.24) * (1/musicrate), 0)
+    self:texcoordvelocity(WideScale(0.325, 0.24) * (1/musicrate) * (1/widthScaler), 0)
     self:customtexturerect(0,0,src_h/txt_h,src_h/txt_h)
   end,
   DoneWalkingCommand=function(self)
@@ -28,56 +30,73 @@ af[#af+1] = LoadActor("grass.png")..{
   end
 }
 
-af[#af+1] = LoadActor("./long-legged-fellow.png")..{
-  InitCommand=function(self)
-    local texture = self:GetTexture()
-    local src_w   = texture:GetSourceWidth()
-    local zoom = 0.3
-    self:rotationy(180):zoom(zoom):valign(1):xy((src_w*zoom)*zoom, _screen.h - 30)
-    self:queuecommand("StepLeft")
-  end,
-  StepLeftCommand=function(self)
-    if walking then
-      self:sleep(step_sleep_duration):rotationz(6):queuecommand("StepRight")
-    end
-  end,
-  StepRightCommand=function(self)
-    if walking then
-      self:sleep(step_sleep_duration):rotationz(-6):queuecommand("StepLeft")
-    end
-  end,
-  DoneWalkingCommand=function(self)
-    self:finishtweening():rotationz(0)
-  end
-}
 
--- a long-legged fellow's speech bubble AF
+-- long legged fellow + speech-bubble AF
 af[#af+1] = Def.ActorFrame{
-  Name="LLF-speech-bubble-AF",
-  InitCommand=function(self) self:visible(false):zoom(0):xy(200,180) end,
-  DoneWalkingCommand=function(self)
-    self:visible(true)
-    self:sleep(0.3*musicrate)
-    self:bounceend(0.3*musicrate):zoom(0.3)
-    self:sleep(1*musicrate):zoom(0):sleep(1.5*musicrate)
-    self:bounceend(0.3*musicrate):zoom(0.4)
+  Name="LLF-AF",
+  InitCommand=function(self)
+
   end,
 
-  LoadActor("./speech-bubbles 1x2.png")..{
-    Name="LLF-speech-bubble",
-    InitCommand=function(self) self:animate(false):setstate(0) end,
-  },
-  LoadActor("./dialogue 1x4.png")..{
-    Name="LLF-text",
+  LoadActor("./long-legged-fellow.png")..{
+    Name="LLF",
     InitCommand=function(self)
-      self:animate(false):setstate(1):cropright(1):y(-20)
+      local texture = self:GetTexture()
+      local src_w   = texture:GetSourceWidth()
+      local zoom = 0.3
+      self:rotationy(180):zoom(zoom*widthScaler)
+      self:valign(1):xy(((src_w*zoom)*zoom), (_screen.h - 30))
+      self:queuecommand("StepLeft")
+    end,
+    StepLeftCommand=function(self)
+      if walking then
+        self:sleep(step_sleep_duration):rotationz(6):queuecommand("StepRight")
+      end
+    end,
+    StepRightCommand=function(self)
+      if walking then
+        self:sleep(step_sleep_duration):rotationz(-6):queuecommand("StepLeft")
+      end
     end,
     DoneWalkingCommand=function(self)
-      self:sleep(0.6*musicrate):linear(text_reveal_duration):cropright(0):sleep(1.25*musicrate):queuecommand("NextText")
+      self:finishtweening():rotationz(0)
+    end
+  },
+
+  -- a long-legged fellow's speech bubble AF
+  Def.ActorFrame{
+    Name="LLF-speech-bubble-AF",
+    InitCommand=function(self)
+      self:visible(false):zoom(0)
     end,
-    NextTextCommand=function(self)
-      self:cropright(1):setstate(2):sleep(0.4*musicrate):linear(text_reveal_duration):cropright(0)
+    OnCommand=function(self)
+      local llf_height = self:GetParent():GetChild("LLF"):GetZoomedHeight()
+      self:xy(200,_screen.h-llf_height)
     end,
+    DoneWalkingCommand=function(self)
+      self:visible(true)
+      self:sleep(0.3*musicrate)
+      self:bounceend(0.3*musicrate):zoom(0.3*widthScaler)
+      self:sleep(1*musicrate):zoom(0):sleep(1.5*musicrate)
+      self:bounceend(0.3*musicrate):zoom(0.4*widthScaler)
+    end,
+
+    LoadActor("./speech-bubbles 1x2.png")..{
+      Name="LLF-speech-bubble",
+      InitCommand=function(self) self:animate(false):setstate(0) end,
+    },
+    LoadActor("./dialogue 1x4.png")..{
+      Name="LLF-text",
+      InitCommand=function(self)
+        self:animate(false):setstate(1):cropright(1):y(-20)
+      end,
+      DoneWalkingCommand=function(self)
+        self:sleep(0.6*musicrate):linear(text_reveal_duration):cropright(0):sleep(1.25*musicrate):queuecommand("NextText")
+      end,
+      NextTextCommand=function(self)
+        self:cropright(1):setstate(2):sleep(0.4*musicrate):linear(text_reveal_duration):cropright(0)
+      end,
+    }
   }
 }
 
@@ -94,14 +113,15 @@ af[#af+1] = Def.ActorFrame{
   -- a little stinker
   LoadActor("./im really good at drawing guys you just want to punch in the face - little stinkers if you will.png")..{
     InitCommand=function(self)
-        self:zoom(0.35):valign(1):xy(_screen.w , _screen.h - 110)
+        self:zoom(0.35 * widthScaler):valign(1):xy(_screen.w , _screen.h - 110)
     end
   },
 
   -- a cat
   LoadActor("../../yatsokan/cat.png")..{
     InitCommand=function(self)
-        self:zoom(0.275):valign(1):xy(_screen.w-150, _screen.h)
+        self:zoom(0.275 * widthScaler):valign(1)
+        self:xy(_screen.w-150*widthScaler, _screen.h)
     end
   },
 
@@ -109,7 +129,8 @@ af[#af+1] = Def.ActorFrame{
   Def.ActorFrame{
     Name="cat-speech-bubble-AF",
     InitCommand=function(self)
-      self:visible(false):zoom(0.4):xy(_screen.w-220,_screen.h-135)
+      self:visible(false):zoom(0.4)
+      self:xy((_screen.w-220*widthScaler),(_screen.h-135*widthScaler))
     end,
     DoneWalkingCommand=function(self)
       self:sleep(1.75*musicrate):queuecommand("Reveal")
@@ -120,8 +141,8 @@ af[#af+1] = Def.ActorFrame{
     Def.Sprite{
       Name="cat-speech-bubble",
       OnCommand=function(self)
-        self:SetTexture( self:GetParent():GetParent():GetParent():GetChild("LLF-speech-bubble-AF"):GetChild("LLF-speech-bubble"):GetTexture() )
-        self:animate(false):setstate(1):rotationy(180)
+        self:SetTexture( self:GetParent():GetParent():GetParent():GetChild("LLF-AF"):GetChild("LLF-speech-bubble-AF"):GetChild("LLF-speech-bubble"):GetTexture() )
+        self:animate(false):setstate(1):rotationy(180):zoom(widthScaler)
       end,
     },
 
@@ -129,10 +150,12 @@ af[#af+1] = Def.ActorFrame{
     Def.Sprite{
       Name="cat-text",
       OnCommand=function(self)
-        self:SetTexture(self:GetParent():GetParent():GetParent():GetChild("LLF-speech-bubble-AF"):GetChild("LLF-text"):GetTexture())
-        self:animate(false):setstate(0):cropright(1):xy(-10,-25):zoom(0.9)
+        self:SetTexture(self:GetParent():GetParent():GetParent():GetChild("LLF-AF"):GetChild("LLF-speech-bubble-AF"):GetChild("LLF-text"):GetTexture())
+        self:animate(false):setstate(0):cropright(1):xy(-10,-25):zoom(0.9*widthScaler)
       end,
-      DoneWalkingCommand=function(self) self:sleep(0.8*musicrate):linear(text_reveal_duration):cropright(0) end,
+      DoneWalkingCommand=function(self)
+        self:sleep(0.8*musicrate):linear(text_reveal_duration):cropright(0)
+      end,
     }
   }
 }
@@ -144,24 +167,24 @@ af[#af+1] = Def.ActorFrame{
   DoneWalkingCommand=function(self) self:visible(true):sleep(4*musicrate):decelerate(0.75*musicrate):y(100) end,
 
   LoadActor("../../yatsokan/peacock.png")..{
-    InitCommand=function(self) self:rotationy(180) end,
+    InitCommand=function(self) self:rotationy(180):zoom(widthScaler) end,
   },
 
   Def.ActorFrame{
-    InitCommand=function(self) self:xy(400, -400) end,
+    InitCommand=function(self) self:xy(400*widthScaler, -400*widthScaler) end,
 
     -- speech-bubble
     Def.Sprite{
       OnCommand=function(self)
-        self:SetTexture(self:GetParent():GetParent():GetParent():GetChild("LLF-speech-bubble-AF"):GetChild("LLF-speech-bubble"):GetTexture())
-        self:animate(false):setstate(0)
+        self:SetTexture(self:GetParent():GetParent():GetParent():GetChild("LLF-AF"):GetChild("LLF-speech-bubble-AF"):GetChild("LLF-speech-bubble"):GetTexture())
+        self:animate(false):setstate(0):zoom(widthScaler)
       end,
     },
     -- text
     Def.Sprite{
       OnCommand=function(self)
-        self:SetTexture(self:GetParent():GetParent():GetParent():GetChild("LLF-speech-bubble-AF"):GetChild("LLF-text"):GetTexture())
-        self:animate(false):setstate(3):rotationz(-180):y(-10)
+        self:SetTexture(self:GetParent():GetParent():GetParent():GetChild("LLF-AF"):GetChild("LLF-speech-bubble-AF"):GetChild("LLF-text"):GetTexture())
+        self:animate(false):setstate(3):rotationz(-180):y(-10):zoom(widthScaler)
       end,
     }
   }

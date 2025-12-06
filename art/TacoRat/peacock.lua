@@ -43,7 +43,7 @@ af[#af+1] = LoadActor("./peacock 2x2.png")..{
     self:animate(false):setstate(0)
 
     local src_w = self:GetTexture():GetSourceWidth()
-    self:zoom(_screen.w/WideScale(src_w*0.75,src_w))
+    self:zoom((_screen.w/WideScale(src_w*0.75,src_w)) * widthScaler)
 
     self:align(0.5, 0.5):Center() -- center the texture
   end,
