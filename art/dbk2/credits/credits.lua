@@ -4,7 +4,7 @@
  -- 3: brandon
  -- 4: catsudawn
  -- 5: Chingching
- -- 6: coconutbowli
+ -- 6: coconutbowling
  -- 7: dandelion21
  -- 8: dbk2
  -- 9: doglover6262
@@ -77,10 +77,10 @@ local function UpdateGridFocus(pn)
   -- -------------------------------------------------------
   -- update small-scale art sprite for player with input event
   local artSprite = ("%sArt"):format(ToEnumShortString(pn))
-  af_ref:GetChild("SelectedArtists"):GetChild(artSprite):playcommand("Set")
+  af_ref:GetChild("SelectedArtists"):GetChild(artSprite):queuecommand("Set")
   -- update label for small-scale art sprite
   local focusLabel = ("%sFocusArtistName"):format(ToEnumShortString(pn))
-  af_ref:GetChild("SelectedArtists"):GetChild(focusLabel):playcommand("Set")
+  af_ref:GetChild("SelectedArtists"):GetChild(focusLabel):queuecommand("Set")
 end
 
 
@@ -203,10 +203,10 @@ for player in ivalues(GAMESTATE:GetHumanPlayers()) do
       self:diffuse(playercolor[player])
     end,
     OnCommand=function(self)
-      self:SetTexture(artistNames_texture):setstate(focus.PlayerNumber_P1)
+      self:SetTexture(artistNames_texture):setstate(focus[player])
     end,
     SetCommand=function(self)
-      self:setstate(focus.PlayerNumber_P1)
+      self:setstate(focus[player])
     end,
   }
 end
